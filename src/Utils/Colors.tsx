@@ -78,7 +78,7 @@ export const gradientColors = [
 ];
 
 // Status gradient colors for AgencyItem
-type GradientTuple = readonly [ColorValue, ColorValue, ...ColorValue[]];
+export type GradientTuple = (string | number)[];
 export const statusGradients: Record<
   'active' | 'inactive' | 'pending' | 'default' | 'primary',
   GradientTuple
