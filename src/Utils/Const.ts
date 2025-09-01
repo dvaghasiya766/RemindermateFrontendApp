@@ -7,6 +7,7 @@ enum Screens {
   ReciverScreen = 'ReciverScreen',
   SignInScreen = 'SignInScreen',
   SignUpScreen = 'SignUpScreen',
+  BottomTab = 'BottomTab',
 }
 
 enum ToastType {

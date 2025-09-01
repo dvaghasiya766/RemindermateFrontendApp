@@ -1,16 +1,10 @@
-import { Fonts } from './Fonts'
-import { Colors } from './Colors'
-import { font } from './Responsive'
+import { Colors } from './Colors';
+import { Fonts } from './Fonts';
+import { font } from './Responsive';
 
 export const CommonStyles = {
   flex: { flex: 1 },
   row: { flexDirection: 'row' },
-  whatsapp_button: {
-    height: 40,
-    width: 40,
-    backgroundColor: Colors.green,
-    borderRadius: 50,
-  },
   call_button: {
     height: 40,
     width: 40,
@@ -55,14 +49,15 @@ export const CommonStyles = {
     alignItems: 'center',
     justifyContent: 'center',
   },
-}
+};
 
 export const CommonStylesFn = {
   text: (size = 3, color = Colors.black, fontFamily = Fonts.regular) => {
     return {
+      includeFontPadding: false,
       fontSize: (size && font(size)) || font(3.5),
       color,
       fontFamily,
-    }
+    };
   },
-}
+};
