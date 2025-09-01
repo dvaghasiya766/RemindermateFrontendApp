@@ -16,12 +16,15 @@ import {
   SignUpScreen,
 } from '../Screens';
 import { Screens } from '../Utils/Const';
+import { Colors } from '../Utils/Colors';
+import { Fonts } from '../Utils/Fonts';
+import { CommonStylesFn } from '../Utils/CommonStyles';
 
 export type RootStackParamList = {
   SignInScreen: undefined;
   SignUpScreen: undefined;
   OTPScreen: undefined;
-  ForgetPasswordScreen: undefined;
+  ForgetPasswordScreen: { email: boolean };
   BottomTab: undefined;
 };
 
@@ -43,6 +46,14 @@ const BottomTab = () => {
       <Tab.Screen
         name={Screens.CalendarViewScreen}
         component={CalendarViewScreen}
+        options={{
+          title: 'Calendar View',
+          headerTitleAlign: 'center',
+          headerTitleStyle: {
+            ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
+          },
+          headerStyle: { backgroundColor: Colors.primary },
+        }}
       />
       <Tab.Screen name={Screens.FollowUpScreen} component={FollowUpScreen} />
       <Tab.Screen name={Screens.ReciverScreen} component={ReciverScreen} />
@@ -57,7 +68,9 @@ const BottomTab = () => {
 const Navigation = () => {
   return (
     <NavigationContainer ref={navigationRef}>
-      <Stack.Navigator>
+      <Stack.Navigator
+        screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
+      >
         <Stack.Screen name={Screens.SignInScreen} component={SignInScreen} />
         <Stack.Screen name={Screens.SignUpScreen} component={SignUpScreen} />
         <Stack.Screen name={Screens.OTPScreen} component={OTPScreen} />

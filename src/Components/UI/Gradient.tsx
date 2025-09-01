@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, ColorValue } from 'react-native';
+import { StyleSheet } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import { GradientTuple, statusGradients } from '../../Utils/Colors';
+import { GradientTuple } from '../../Utils/Colors';
 
 interface GradientButtonProps {
-  colors: GradientTuple; // can be preset or tuple
+  colors?: GradientTuple; // gradient colors
   start?: { x: number; y: number };
   end?: { x: number; y: number };
   style?: any;
@@ -12,7 +12,7 @@ interface GradientButtonProps {
 }
 
 export default function Gradient({
-  colors = statusGradients.primary,
+  colors = ['#4c669f', '#3b5998', '#192f6a'], // default gradient
   start = { x: 1, y: 0 },
   end = { x: 0, y: 0 },
   style,

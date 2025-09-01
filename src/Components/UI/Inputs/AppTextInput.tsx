@@ -38,6 +38,7 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
       topValue: 19,
       color: Colors.gray200,
       border: Colors.gray100,
+      icon: Colors.gray400,
     });
 
     const toggleVisibility = () => setIsSecure(prev => !prev);
@@ -49,6 +50,7 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
         topValue: -4,
         color: Colors.primary,
         border: Colors.primary,
+        icon: Colors.primary,
       });
 
     const onBlur = () => {
@@ -59,6 +61,7 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
           topValue: -4,
           color: Colors.gray200,
           border: Colors.gray100,
+          icon: Colors.gray400,
         });
       } else {
         setLabelState({
@@ -66,6 +69,7 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
           topValue: 19,
           color: Colors.gray200,
           border: Colors.gray100,
+          icon: Colors.gray400,
         });
       }
     };
@@ -113,7 +117,7 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
             <Ionicons
               name={isSecure ? 'eye-off' : 'eye'}
               size={20}
-              color={labelState.isFocused ? Colors.primary : Colors.gray400}
+              color={labelState.icon}
             />
           </IconButton>
         )}
@@ -137,7 +141,7 @@ const styles = StyleSheet.create({
     left: 20,
     top: 19,
     backgroundColor: Colors.white,
-    ...CommonStylesFn.text(3.5, Colors.gray200, Fonts.medium),
+    ...CommonStylesFn.text(3, Colors.gray200, Fonts.medium),
   },
   input: {
     height: 50,
@@ -147,6 +151,6 @@ const styles = StyleSheet.create({
     marginVertical: 4,
     paddingHorizontal: 23,
     overflow: 'hidden',
-    ...CommonStylesFn.text(3.5, Colors.gray400, Fonts.medium),
+    ...CommonStylesFn.text(3.5, Colors.gray400, Fonts.regular),
   },
 });
