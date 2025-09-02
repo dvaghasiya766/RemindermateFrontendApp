@@ -4,6 +4,7 @@ import Title from '../Components/UI/Text/Title';
 import MyAgenda from '../Components/UI/Calendar/MyAgenda';
 import { Colors } from '../Utils/Colors';
 import { dummy_data } from './CalendarViewScreen';
+import FloatingButton from '../Components/UI/Calendar/FloatingButton';
 
 const FollowUpScreen = () => {
   return (
@@ -17,11 +18,14 @@ const FollowUpScreen = () => {
             title={itemData.item.title}
             desc={itemData.item.description}
             time={itemData.item.time}
+            status="Pending"
+            reciverColor="#e05757ff"
           />
         )}
         data={dummy_data}
         showsVerticalScrollIndicator={false}
       />
+      <FloatingButton bgColor={Colors.gradientGreen} />
     </View>
   );
 };

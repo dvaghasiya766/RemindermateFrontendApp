@@ -5,6 +5,7 @@ import { DateData } from 'react-native-calendars';
 import MyAgenda from '../Components/UI/Calendar/MyAgenda';
 import Title from '../Components/UI/Text/Title';
 import { Colors } from '../Utils/Colors';
+import FloatingButton from '../Components/UI/Calendar/FloatingButton';
 
 export const dummy_data = [
   {
@@ -104,11 +105,14 @@ const CalendarViewScreen = () => {
             title={itemData.item.title}
             desc={itemData.item.description}
             time={itemData.item.time}
+            status="Completed"
+            reciverColor="#e05757ff"
           />
         )}
         data={dummy_data}
         showsVerticalScrollIndicator={false}
       />
+      <FloatingButton bgColor={Colors.primary} />
     </View>
   );
 };

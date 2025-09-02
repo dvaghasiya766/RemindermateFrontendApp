@@ -1,5 +1,3 @@
-import { ColorValue } from 'react-native';
-
 export const Colors = {
   // Primary colors
   primary: '#3b82f6',

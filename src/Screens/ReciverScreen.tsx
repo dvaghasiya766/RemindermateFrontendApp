@@ -1,8 +1,8 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import React from 'react';
-import { Colors } from '../Utils/Colors';
-import Title from '../Components/UI/Text/Title';
 import MyRecivers from '../Components/UI/Calendar/MyRecivers';
+import FloatingButton from '../Components/UI/Calendar/FloatingButton';
+import { Colors } from '../Utils/Colors';
 
 const dummy_data = [
   { color: '#f00', email: 'd@v.com', name: 'Dev Vaghasiua' },
@@ -42,6 +42,7 @@ const ReciverScreen = () => {
         data={dummy_data}
         showsVerticalScrollIndicator={false}
       />
+      <FloatingButton bgColor={Colors.accent} />
     </View>
   );
 };

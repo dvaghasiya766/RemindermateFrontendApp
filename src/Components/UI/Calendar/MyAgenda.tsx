@@ -1,41 +1,167 @@
-import { StyleSheet, Text, View } from 'react-native';
+// import { StyleSheet, View } from 'react-native';
+// import React from 'react';
+// import { Colors } from '../../../Utils/Colors';
+// import CardTitle from '../Text/CardTitle';
+// import CardDesc from '../Text/CardDesc';
+// import CardTime from '../Text/CardTime';
+// import Ionicons from '@react-native-vector-icons/ionicons';
+// import IconButton from '../Buttons/IconButton';
+
+// interface MyAgendaProps {
+//   title: string;
+//   desc: string;
+//   time: string;
+// }
+
+// const MyAgenda = ({ title, desc, time }: MyAgendaProps) => {
+//   return (
+//     <View style={[styles.rootContainer]}>
+//       <View style={styles.indecatorContainer}></View>
+//       <View style={styles.outerContainer}>
+//         <View style={styles.cardHeaderContainer}>
+//           <CardTitle>{title}</CardTitle>
+//           <CardTime>{time}</CardTime>
+//         </View>
+//         <CardDesc>{desc}</CardDesc>
+//         <View style={styles.cardFooterContainer}>
+//           <IconButton onPress={() => {}}>
+//             <Ionicons
+//               name="notifications-off"
+//               size={20}
+//               color={Colors.gray300}
+//             />
+//           </IconButton>
+//           <IconButton onPress={() => {}}>
+//             <Ionicons name="checkmark-done" size={20} color={Colors.gray300} />
+//           </IconButton>
+//           <View style={styles.status}></View>
+//         </View>
+//       </View>
+//     </View>
+//   );
+// };
+
+// export default MyAgenda;
+
+// const styles = StyleSheet.create({
+//   rootContainer: {
+//     backgroundColor: Colors.cardBlueBackground,
+//     flex: 1,
+//     flexDirection: 'row',
+//     justifyContent: 'center',
+//     alignItems: 'center',
+//     borderRadius: 10,
+//     overflow: 'hidden',
+//     marginHorizontal: 10,
+//     marginVertical: 3,
+//     borderWidth: 2,
+//     borderColor: Colors.gray100,
+//     elevation: 4, // shadow on Android
+//     shadowColor: Colors.black, // shadow iOS
+//     shadowOpacity: 0.1,
+//     shadowOffset: { width: 0, height: 2 },
+//     shadowRadius: 6,
+//   },
+//   indecatorContainer: {
+//     width: 6,
+//     height: '100%',
+//     backgroundColor: '#e05757ff',
+//     borderStartStartRadius: 1,
+//   },
+//   outerContainer: {
+//     flex: 1,
+//     borderRadius: 10,
+//     padding: 10,
+//     overflow: 'hidden',
+//   },
+//   cardHeaderContainer: {
+//     paddingEnd: 2,
+//     flex: 1,
+//     flexDirection: 'row',
+//     justifyContent: 'space-between',
+//     alignItems: 'center',
+//   },
+//   status: {
+//     margin: 1,
+//     height: 18,
+//     width: 18,
+//     borderRadius: 9,
+//     backgroundColor: Colors.warning,
+//   },
+//   cardFooterContainer: {
+//     paddingEnd: 3,
+//     paddingTop: 8,
+//     flex: 1,
+//     flexDirection: 'row',
+//     justifyContent: 'flex-end',
+//     alignItems: 'center',
+//     marginBottom: 0,
+//     gap: 15,
+//   },
+// });
+
+import { StyleSheet, View, Text } from 'react-native';
 import React from 'react';
 import { Colors } from '../../../Utils/Colors';
 import CardTitle from '../Text/CardTitle';
 import CardDesc from '../Text/CardDesc';
 import CardTime from '../Text/CardTime';
-import Ionicons from '@react-native-vector-icons/ionicons';
-import IconButton from '../Buttons/IconButton';
 
 interface MyAgendaProps {
   title: string;
   desc: string;
   time: string;
-  // status: string;
+  status: 'Pending' | 'Completed' | 'Missed';
+  reciverColor: string;
 }
 
-const MyAgenda = ({ title, desc, time }: MyAgendaProps) => {
+const MyAgenda = ({
+  title,
+  desc,
+  time,
+  status,
+  reciverColor,
+}: MyAgendaProps) => {
+  // Pick color based on status
+  const statusColor =
+    status === 'Completed'
+      ? Colors.success
+      : status === 'Missed'
+      ? Colors.danger
+      : Colors.warning;
+
   return (
-    <View style={[styles.rootContainer]}>
-      <View style={styles.indecatorContainer}></View>
-      <View style={styles.outerContainer}>
-        <View style={styles.cardHeaderContainer}>
-          <CardTitle>{title}</CardTitle>
-          <CardTime>{time}</CardTime>
-        </View>
-        <CardDesc>{desc}</CardDesc>
-        <View style={styles.cardFooterContainer}>
-          <IconButton onPress={() => {}}>
-            <Ionicons
-              name="notifications-off"
-              size={20}
-              color={Colors.gray300}
-            />
-          </IconButton>
-          <IconButton onPress={() => {}}>
-            <Ionicons name="checkmark-done" size={20} color={Colors.gray300} />
-          </IconButton>
-          <View style={styles.status}></View>
+    <View style={styles.shadowWrapper}>
+      <View style={styles.rootContainer}>
+        {/* Left Indicator */}
+        <View
+          style={[styles.indicatorContainer, { backgroundColor: reciverColor }]}
+        />
+
+        {/* Content */}
+        <View style={styles.outerContainer}>
+          {/* Header */}
+          <View style={styles.cardHeaderContainer}>
+            <CardTitle>{title}</CardTitle>
+            <CardTime>{time}</CardTime>
+          </View>
+
+          {/* Description */}
+          <CardDesc>{desc}</CardDesc>
+
+          {/* Status Tag */}
+          <View style={styles.footer}>
+            <View
+              style={[
+                styles.statusChip,
+                { backgroundColor: statusColor + '22' },
+              ]}
+            >
+              <Text style={[styles.statusText, { color: statusColor }]}>
+                {status}
+              </Text>
+            </View>
+          </View>
         </View>
       </View>
     </View>
@@ -45,58 +171,49 @@ const MyAgenda = ({ title, desc, time }: MyAgendaProps) => {
 export default MyAgenda;
 
 const styles = StyleSheet.create({
+  shadowWrapper: {
+    marginHorizontal: 12,
+    marginVertical: 6,
+    borderRadius: 12,
+    shadowColor: Colors.black,
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 4 },
+    shadowRadius: 8,
+    elevation: 5,
+    backgroundColor: Colors.white, // needed for iOS shadow
+  },
   rootContainer: {
     backgroundColor: Colors.cardBlueBackground,
-    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 12,
     overflow: 'hidden',
-    marginHorizontal: 10,
-    marginVertical: 3,
-    borderWidth: 2,
-    borderColor: Colors.gray100,
-    elevation: 4, // shadow on Android
-    shadowColor: Colors.black, // shadow iOS
-    shadowOpacity: 0.1,
-    shadowOffset: { width: 0, height: 2 },
-    shadowRadius: 6,
   },
-  indecatorContainer: {
+  indicatorContainer: {
     width: 6,
     height: '100%',
-    backgroundColor: '#e05757ff',
-    borderStartStartRadius: 1,
   },
   outerContainer: {
     flex: 1,
-    borderRadius: 10,
-    padding: 10,
-    overflow: 'hidden',
+    padding: 12,
   },
   cardHeaderContainer: {
-    paddingEnd: 2,
-    flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    marginBottom: 6,
   },
-  status: {
-    margin: 1,
-    height: 18,
-    width: 18,
-    borderRadius: 9,
-    backgroundColor: Colors.warning,
-  },
-  cardFooterContainer: {
-    paddingEnd: 3,
-    paddingTop: 8,
-    flex: 1,
+  footer: {
+    marginTop: 8,
     flexDirection: 'row',
     justifyContent: 'flex-end',
-    alignItems: 'center',
-    marginBottom: 0,
-    gap: 15,
+  },
+  statusChip: {
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+  },
+  statusText: {
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
