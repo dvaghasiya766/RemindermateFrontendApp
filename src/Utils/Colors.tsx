@@ -3,7 +3,7 @@ import { ColorValue } from 'react-native';
 export const Colors = {
   // Primary colors
   primary: '#3b82f6',
-  primaryLight: '#FFA630',
+  primaryLight: '#89b5fcff',
   primaryDark: '#FF8833',
 
   // Accent colors
@@ -11,7 +11,11 @@ export const Colors = {
   accentLight: '#f9ebb2',
 
   // Background & Surface
-  background: '#FFF6E9',
+  blueBackground: '#e9f0ffff',
+  greenBackground: '#e9ffecff',
+  accentBackground: '#fffce9ff',
+  orangeBackground: '#fff5e9ff',
+  cardBlueBackground: '#f9f9faff',
 
   // Text colors
   textPrimary: '#000000',

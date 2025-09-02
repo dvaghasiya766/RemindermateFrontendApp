@@ -112,7 +112,11 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
         {isPsw && (
           <IconButton
             onPress={toggleVisibility}
-            style={{ position: 'absolute', right: 3 }}
+            style={{
+              position: 'absolute',
+              right: 3,
+              padding: 12,
+            }}
           >
             <Ionicons
               name={isSecure ? 'eye-off' : 'eye'}

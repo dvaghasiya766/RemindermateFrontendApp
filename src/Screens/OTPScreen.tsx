@@ -6,10 +6,10 @@ import Title from '../Components/UI/Text/Title';
 import PrimaryButton from '../Components/UI/Buttons/PrimaryButton';
 import OTPTextView from 'react-native-otp-textinput';
 import { Fonts } from '../Utils/Fonts';
-import { navigate } from '../Navigations/NavigationServices';
+import { replace } from '../Navigations/NavigationServices';
 
 const handleOTP = () => {
-  navigate('ForgetPasswordScreen', { isSentOTP: true });
+  replace('ForgetPasswordScreen', { showEmail: false });
 };
 
 const OTPScreen = () => {

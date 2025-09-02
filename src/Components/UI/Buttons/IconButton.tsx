@@ -20,7 +20,7 @@ export default function IconButton({
         android_ripple={{ color: Colors.gray200 }}
         style={({ pressed }) => pressed && styles.pressed}
       >
-        <View style={styles.innerContainer}>{children}</View>
+        <View>{children}</View>
       </Pressable>
     </View>
   );
@@ -29,11 +29,9 @@ export default function IconButton({
 const styles = StyleSheet.create({
   outterContainer: {
     borderRadius: '50%',
-    // backgroundColor: Colors.gray100,
     overflow: 'hidden',
   },
-  innerContainer: { padding: 12 },
   pressed: {
-    opacity: 0.9,
+    opacity: 0.7,
   },
 });

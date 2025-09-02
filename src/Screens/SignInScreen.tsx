@@ -9,10 +9,10 @@ import PrimaryButton from '../Components/UI/Buttons/PrimaryButton';
 import { Screens } from '../Utils/Const';
 import ChangeStackText from '../Components/UI/Text/ChangeStackText';
 import NavigateButton from '../Components/UI/Buttons/NavigateButton';
-import { navigate } from '../Navigations/NavigationServices';
+import { replace } from '../Navigations/NavigationServices';
 
 const handleSignIn = () => {
-  navigate(Screens.BottomTab, { isSentOTP: false });
+  replace(Screens.BottomTab, { isSentOTP: false });
 };
 
 const SignInScreen = () => {
@@ -63,6 +63,7 @@ const SignInScreen = () => {
               screen={Screens.ForgetPasswordScreen}
               navigateText={'Password'}
               normalText={'If Remember'}
+              params={{ showEmail: true }}
             />
           </View>
         </ScrollView>
