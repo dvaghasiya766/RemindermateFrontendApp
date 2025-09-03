@@ -8,7 +8,7 @@ import CardTime from '../Text/CardTime';
 interface MyAgendaProps {
   title: string;
   desc: string;
-  time: string;
+  time?: string;
   status: 'Pending' | 'Completed' | 'Missed';
   reciverColor: string;
 }
@@ -23,7 +23,7 @@ const MyAgenda = ({
   // Pick color based on status
   const statusColor =
     status === 'Completed'
-      ? Colors.success
+      ? Colors.gradientGreen
       : status === 'Missed'
       ? Colors.danger
       : Colors.warning;
@@ -41,7 +41,7 @@ const MyAgenda = ({
           {/* Header */}
           <View style={styles.cardHeaderContainer}>
             <CardTitle>{title}</CardTitle>
-            <CardTime>{time}</CardTime>
+            {time && <CardTime>{time}</CardTime>}
           </View>
 
           {/* Description */}
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   indicatorContainer: {
-    width: 6,
+    width: 8,
     height: '100%',
   },
   outerContainer: {

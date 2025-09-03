@@ -21,18 +21,19 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 interface AppTextInputProps extends TextInputProps {
   label?: string;
   isPsw?: boolean;
+  setEnteredText(text: string): void;
 }
 
 // 👇 forwardRef so parent can access .focus()
-const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
-  ({ label, isPsw = false, ...props }, ref) => {
+const AppTextInput = forwardRef<any | TextInput, AppTextInputProps>(
+  ({ label, isPsw = false, setEnteredText, ...props }, ref) => {
     const inputRef = useRef<TextInput>(null);
 
     // expose imperative methods to parent
     useImperativeHandle(ref, () => inputRef.current);
 
     const [isSecure, setIsSecure] = useState(isPsw);
-    const [enteredText, setEnteredText] = useState('');
+    const [enteredText, setText] = useState('');
     const [labelState, setLabelState] = useState({
       isFocused: false,
       topValue: 19,
@@ -42,7 +43,10 @@ const AppTextInput = forwardRef<TextInput, AppTextInputProps>(
     });
 
     const toggleVisibility = () => setIsSecure(prev => !prev);
-    const onChangeText = (text: string) => setEnteredText(text);
+    const onChangeText = (text: string) => {
+      setEnteredText(text);
+      setText(text);
+    };
 
     const onFocus = () =>
       setLabelState({

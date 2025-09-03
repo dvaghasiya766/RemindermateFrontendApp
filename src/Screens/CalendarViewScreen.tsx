@@ -1,94 +1,26 @@
 import { FlatList, StyleSheet, View } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Calender from '../Components/UI/Calendar/Calender';
 import { DateData } from 'react-native-calendars';
 import MyAgenda from '../Components/UI/Calendar/MyAgenda';
 import Title from '../Components/UI/Text/Title';
 import { Colors } from '../Utils/Colors';
 import FloatingButton from '../Components/UI/Calendar/FloatingButton';
-
-export const dummy_data = [
-  {
-    title: 'FollowUp Title',
-    description:
-      'FollowUp Description is the task has been inclomplete and this is not neccesory task',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been inclompletes',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been inclompletes',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description:
-      'FollowUp Description is the task has been inclomplete and this is not neccesory task',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been inclompletes',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been inclompletes',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description:
-      'FollowUp Description is the task has been inclomplete and this is not neccesory task',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been inclompletes',
-    time: '9:00 AM',
-  },
-  {
-    title: 'FollowUp Title',
-    description: 'FollowUp Description is the task has been inclompletes',
-    time: '9:00 AM',
-  },
-];
+import { DUMMY_FOLLOWUPS, DUMMY_RECIVERS } from '../Data/dummy_data';
+import { useIsFocused } from '@react-navigation/core';
 
 const CalendarViewScreen = () => {
+  const isFocused = useIsFocused();
+  const floatingButtonRef = useRef<null | { toggleMenu: () => void }>(null);
+
+  useEffect(() => {
+    if (!isFocused) {
+      // Perform any actions needed when the screen is focused
+      console.log('FollowUpScreen is focused');
+      floatingButtonRef.current?.toggleMenu();
+    }
+  }, [isFocused]);
+
   const [selectedDate, setSelectedDate] = useState(Date.toString());
   const changeSelectedDate = (day: DateData) => {
     setSelectedDate(day.dateString);
@@ -105,14 +37,18 @@ const CalendarViewScreen = () => {
             title={itemData.item.title}
             desc={itemData.item.description}
             time={itemData.item.time}
-            status="Completed"
-            reciverColor="#e05757ff"
+            status={itemData.item.status}
+            reciverColor={
+              DUMMY_RECIVERS.find(r => r.creatorId === itemData.item.creatorId)
+                ?.color || Colors.primary
+            }
           />
         )}
-        data={dummy_data}
+        data={DUMMY_FOLLOWUPS}
         showsVerticalScrollIndicator={false}
       />
       <FloatingButton
+        ref={floatingButtonRef}
         bgColor={Colors.primary}
         iconColor={Colors.primary}
         secondaryColor={Colors.blueBackground}

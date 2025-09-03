@@ -15,6 +15,11 @@ const handleSignUp = () => {
 };
 
 const SignInScreen = () => {
+  const [enteredEmail, setEnteredEmail] = React.useState('');
+  const [enteredName, setEnteredName] = React.useState('');
+  const [enteredPassword, setEnteredPassword] = React.useState('');
+  const [enteredRePassword, setEnteredRePassword] = React.useState('');
+
   const emailRef = useRef<TextInput>(null);
   const nameRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
@@ -33,6 +38,7 @@ const SignInScreen = () => {
           <View style={styles.inputContainer}>
             <AppTextInput
               ref={emailRef}
+              setEnteredText={setEnteredEmail}
               label="Enter Your Email"
               keyboardType="email-address"
               autoCapitalize="none"
@@ -42,6 +48,7 @@ const SignInScreen = () => {
             />
             <AppTextInput
               ref={nameRef}
+              setEnteredText={setEnteredName}
               label="Set Your Name"
               autoCapitalize="words"
               autoCorrect={true}
@@ -51,6 +58,7 @@ const SignInScreen = () => {
             <AppTextInput
               isPsw
               ref={passwordRef}
+              setEnteredText={setEnteredPassword}
               label="Create New Password"
               returnKeyType="next"
               onSubmitEditing={() => repasswordRef.current?.focus()}
@@ -58,6 +66,7 @@ const SignInScreen = () => {
             <AppTextInput
               isPsw
               ref={repasswordRef}
+              setEnteredText={setEnteredRePassword}
               label="Re-Enter Password"
               secureTextEntry
               autoCapitalize="none"

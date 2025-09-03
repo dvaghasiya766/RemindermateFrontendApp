@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import React, {
+  forwardRef,
+  Ref,
+  useEffect,
+  useImperativeHandle,
+  useState,
+} from 'react';
+import { StyleSheet, View, TouchableOpacity, Alert } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,7 +14,6 @@ import Animated, {
 } from 'react-native-reanimated';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { Colors } from '../../../Utils/Colors'; // your theme file
-import { heightPx, widthPx } from '../../../Utils/Responsive';
 
 interface FloatingButtonProps {
   bgColor: string;
@@ -16,12 +21,21 @@ interface FloatingButtonProps {
   iconColor: string;
 }
 
-const FloatingButton = ({
-  bgColor,
-  secondaryColor,
-  iconColor,
-}: FloatingButtonProps) => {
+const FloatingButton = forwardRef<
+  null | { toggleMenu: () => void },
+  FloatingButtonProps
+>(({ bgColor, secondaryColor, iconColor }, ref) => {
+  useImperativeHandle(ref, () => ({
+    toggleMenu: () => {
+      setOpen(false);
+      rotation.value = withSpring(0);
+      offset.value = withTiming(0);
+    },
+  }));
+
   const [open, setOpen] = useState(false);
+
+  console.log('FloatingButton Rendered', open);
   const rotation = useSharedValue(0);
   const offset = useSharedValue(0);
 
@@ -95,7 +109,7 @@ const FloatingButton = ({
       </TouchableOpacity>
     </View>
   );
-};
+});
 
 export default FloatingButton;
 

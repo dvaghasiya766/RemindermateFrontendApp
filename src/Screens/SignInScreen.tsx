@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import React, { useRef } from 'react';
 // Custom Components
 import Gradient from '../Components/UI/Gradient';
@@ -10,14 +10,40 @@ import { Screens } from '../Utils/Const';
 import ChangeStackText from '../Components/UI/Text/ChangeStackText';
 import NavigateButton from '../Components/UI/Buttons/NavigateButton';
 import { replace } from '../Navigations/NavigationServices';
-
-const handleSignIn = () => {
-  replace(Screens.BottomTab, { isSentOTP: false });
-};
+import { DUMMY_USERS } from '../Data/dummy_data';
 
 const SignInScreen = () => {
+  const [enteredEmail, setEnteredEmail] = React.useState('');
+  const [enteredPassword, setEnteredPassword] = React.useState('');
+
+  // alice@example.com
+  // pass123
+
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
+
+  const handleSignIn = () => {
+    if (!enteredEmail || !enteredPassword) {
+      Alert.alert('Missing Fields', 'Please enter both email and password.', [
+        { text: 'OK' },
+      ]);
+      return;
+    }
+
+    const isValidUser = DUMMY_USERS.find(
+      user => user.email === enteredEmail && user.password === enteredPassword,
+    );
+
+    if (!isValidUser) {
+      Alert.alert("Don't lie!", 'You know that this is wrong...', [
+        { text: 'Sorry!', style: 'cancel' },
+      ]);
+      return;
+    }
+
+    console.log('✅ Sign-In Successful!', isValidUser);
+    replace(Screens.BottomTab);
+  };
 
   return (
     <Gradient
@@ -32,6 +58,7 @@ const SignInScreen = () => {
           <View style={styles.inputContainer}>
             <AppTextInput
               ref={emailRef}
+              setEnteredText={setEnteredEmail}
               label="Enter Your Email"
               autoComplete="email" // or "off", "name", "password" etc. (as needed)
               keyboardType="email-address"
@@ -43,7 +70,8 @@ const SignInScreen = () => {
             <AppTextInput
               isPsw
               ref={passwordRef}
-              label="Create New Password"
+              setEnteredText={setEnteredPassword}
+              label="Enter Password"
               autoCapitalize="none"
               autoCorrect={false}
               returnKeyType="send"
