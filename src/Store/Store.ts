@@ -2,11 +2,11 @@ import { Tuple, combineReducers, configureStore } from '@reduxjs/toolkit';
 import logger from 'redux-logger';
 import { persistReducer, persistStore } from 'redux-persist';
 import Auth from './Auth';
-import { MMKVStorage } from './MmkvStorage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const persistConfig = {
   key: 'root',
-  storage: MMKVStorage,
+  storage: AsyncStorage,
   whitelist: ['Auth'],
 };
 

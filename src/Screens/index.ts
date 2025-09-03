@@ -6,6 +6,10 @@ import OTPScreen from './OTPScreen';
 import ReciverScreen from './ReciverScreen';
 import SignInScreen from './SignInScreen';
 import SignUpScreen from './SignUpScreen';
+import AddFollowUpScreen from './AddFollowUpScreen';
+import AddReciverScreen from './AddReciverScreen';
+import ViewFollowUpScreen from './ViewFollowUpScreen';
+import ViewReciverScreen from './ViewReciverScreen';
 
 export {
   CalendarViewScreen,
@@ -16,4 +20,8 @@ export {
   ReciverScreen,
   SignInScreen,
   SignUpScreen,
+  AddFollowUpScreen,
+  AddReciverScreen,
+  ViewFollowUpScreen,
+  ViewReciverScreen,
 };

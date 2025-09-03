@@ -11,16 +11,22 @@ import ChangeStackText from '../Components/UI/Text/ChangeStackText';
 import NavigateButton from '../Components/UI/Buttons/NavigateButton';
 import { replace } from '../Navigations/NavigationServices';
 import { DUMMY_USERS } from '../Data/dummy_data';
+import { useDispatch } from 'react-redux';
+import { setToken, setUser } from '../Store/Auth';
+import { useAppDispatch, useAppSelector } from '../Hooks/StoreHooks';
+import Loader from '../Utils/AppLoader';
 
 const SignInScreen = () => {
   const [enteredEmail, setEnteredEmail] = React.useState('');
   const [enteredPassword, setEnteredPassword] = React.useState('');
 
-  // alice@example.com
-  // pass123
+  // const { user } = useAppSelector(state => state.Auth);
+  // console.log('👤 Current User at SignInScreen:', user);
 
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
+
+  const dispatch = useDispatch();
 
   const handleSignIn = () => {
     if (!enteredEmail || !enteredPassword) {
@@ -41,8 +47,12 @@ const SignInScreen = () => {
       return;
     }
 
+    // dispatch(setUser(isValidUser));
+    // dispatch(setToken('dummy-auth-token'));
+
     console.log('✅ Sign-In Successful!', isValidUser);
-    replace(Screens.BottomTab);
+    Loader.isLoading(true);
+    // replace(Screens.BottomTab);
   };
 
   return (
