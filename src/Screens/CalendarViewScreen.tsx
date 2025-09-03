@@ -112,7 +112,11 @@ const CalendarViewScreen = () => {
         data={dummy_data}
         showsVerticalScrollIndicator={false}
       />
-      <FloatingButton bgColor={Colors.primary} />
+      <FloatingButton
+        bgColor={Colors.primary}
+        iconColor={Colors.primary}
+        secondaryColor={Colors.blueBackground}
+      />
     </View>
   );
 };

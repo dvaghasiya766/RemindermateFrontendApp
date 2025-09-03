@@ -49,7 +49,7 @@ const BottomTab = () => {
   return (
     <Tab.Navigator
       screenOptions={{
-        animation: 'fade',
+        // animation: 'fade',
         sceneStyle: { height: 200 },
         tabBarLabelStyle: { fontSize: 11 },
         tabBarInactiveTintColor: Colors.gray300,

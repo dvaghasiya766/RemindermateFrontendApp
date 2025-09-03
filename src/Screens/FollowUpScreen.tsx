@@ -25,7 +25,11 @@ const FollowUpScreen = () => {
         data={dummy_data}
         showsVerticalScrollIndicator={false}
       />
-      <FloatingButton bgColor={Colors.gradientGreen} />
+      <FloatingButton
+        bgColor={Colors.gradientGreen}
+        secondaryColor={Colors.greenBackground}
+        iconColor={Colors.gradientGreen}
+      />
     </View>
   );
 };

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -8,12 +8,19 @@ import Animated, {
 } from 'react-native-reanimated';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { Colors } from '../../../Utils/Colors'; // your theme file
+import { heightPx, widthPx } from '../../../Utils/Responsive';
 
 interface FloatingButtonProps {
   bgColor: string;
+  secondaryColor: string;
+  iconColor: string;
 }
 
-const FloatingButton = ({ bgColor }: FloatingButtonProps) => {
+const FloatingButton = ({
+  bgColor,
+  secondaryColor,
+  iconColor,
+}: FloatingButtonProps) => {
   const [open, setOpen] = useState(false);
   const rotation = useSharedValue(0);
   const offset = useSharedValue(0);
@@ -48,34 +55,34 @@ const FloatingButton = ({ bgColor }: FloatingButtonProps) => {
       {/* Update Profile */}
       <Animated.View style={[styles.option, profileStyle]}>
         <TouchableOpacity
-          style={styles.smallButton}
+          style={[styles.smallButton, { backgroundColor: secondaryColor }]}
           onPress={() => console.log('Update Profile')}
         >
-          <Ionicons name="person" size={22} color={Colors.white} />
+          <Ionicons name="person" size={22} color={iconColor} />
         </TouchableOpacity>
-        <Text style={styles.label}>Update Profile</Text>
+        {/* <Text style={styles.label}>Update Profile</Text> */}
       </Animated.View>
 
       {/* Add Receiver */}
       <Animated.View style={[styles.option, receiverStyle]}>
         <TouchableOpacity
-          style={styles.smallButton}
+          style={[styles.smallButton, { backgroundColor: secondaryColor }]}
           onPress={() => console.log('Add Receiver')}
         >
-          <Ionicons name="people" size={22} color={Colors.white} />
+          <Ionicons name="people" size={22} color={iconColor} />
         </TouchableOpacity>
-        <Text style={styles.label}>Add Receiver</Text>
+        {/* <Text style={styles.label}>Add Receiver</Text> */}
       </Animated.View>
 
       {/* Add FollowUp */}
       <Animated.View style={[styles.option, followUpStyle]}>
         <TouchableOpacity
-          style={styles.smallButton}
+          style={[styles.smallButton, { backgroundColor: secondaryColor }]}
           onPress={() => console.log('Add FollowUp')}
         >
-          <Ionicons name="calendar" size={22} color={Colors.white} />
+          <Ionicons name="calendar" size={22} color={iconColor} />
         </TouchableOpacity>
-        <Text style={styles.label}>Add FollowUp</Text>
+        {/* <Text style={styles.label}>Add FollowUp</Text> */}
       </Animated.View>
 
       {/* Main Floating Button */}
@@ -112,12 +119,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowRadius: 5,
   },
-  option: {
-    position: 'absolute',
-    right: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
   smallButton: {
     backgroundColor: Colors.primaryDark,
     width: 45,
@@ -127,6 +128,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 10,
     elevation: 4,
+  },
+  option: {
+    position: 'absolute',
+    right: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   label: {
     marginRight: 10,
