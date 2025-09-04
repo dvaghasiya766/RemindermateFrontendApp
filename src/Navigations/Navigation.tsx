@@ -6,6 +6,8 @@ import {
   createNavigationContainerRef,
 } from '@react-navigation/native';
 import {
+  AddFollowUpScreen,
+  AddReciverScreen,
   CalendarViewScreen,
   FollowUpScreen,
   ForgetPasswordScreen,
@@ -14,12 +16,15 @@ import {
   ReciverScreen,
   SignInScreen,
   SignUpScreen,
+  ViewFollowUpScreen,
+  ViewReciverScreen,
 } from '../Screens';
 import { Screens } from '../Utils/Const';
-import { Colors } from '../Utils/Colors';
+import { Colors, statusGradients } from '../Utils/Colors';
 import { Fonts } from '../Utils/Fonts';
 import { CommonStylesFn } from '../Utils/CommonStyles';
 import Ionicons from '@react-native-vector-icons/ionicons';
+import LinearGradient from 'react-native-linear-gradient';
 
 export type RootStackParamList = {
   SignInScreen: undefined;
@@ -31,6 +36,10 @@ export type RootStackParamList = {
   FollowUpScreen: undefined;
   ReciverScreen: undefined;
   NotificationScreen: undefined;
+  AddFollowUpScreen: undefined;
+  AddReciverScreen: undefined;
+  ViewFollowUpScreen: undefined;
+  ViewReciverScreen: undefined;
 };
 
 export type BottomTabParamList = {
@@ -181,6 +190,107 @@ const Navigation = () => {
           component={ForgetPasswordScreen}
         />
         <Stack.Screen name={Screens.BottomTab} component={BottomTab} />
+        {/* <Stack.Screen
+          name={Screens.AddFollowUpScreen}
+          component={AddFollowUpScreen}
+          options={{
+            headerShown: true,
+            title: 'Add FollowUp',
+            headerStyle: { backgroundColor: Colors.primary },
+            headerShadowVisible: false,
+            headerTitleStyle: {
+              ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
+            },
+          }}
+        /> */}
+        <Stack.Screen
+          name={Screens.AddFollowUpScreen}
+          component={AddFollowUpScreen}
+          options={{
+            headerShown: true,
+            title: 'Add New Follow-Up', // 👈 friendlier title
+            headerBackground: () => (
+              <LinearGradient
+                colors={statusGradients.FollowUp}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
+            headerShadowVisible: true,
+            headerTitleStyle: {
+              ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
+            },
+            headerTintColor: Colors.white, // 👈 makes back button white
+          }}
+        />
+        <Stack.Screen
+          name={Screens.AddReciverScreen}
+          component={AddReciverScreen}
+          options={{
+            headerShown: true,
+            title: 'Add New Reciver', // 👈 friendlier title
+            headerBackground: () => (
+              <LinearGradient
+                colors={statusGradients.Reciver}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
+            headerShadowVisible: false,
+            // headerTitleAlign: 'center', // 👈 center the title
+            headerTitleStyle: {
+              ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
+              // letterSpacing: 1, // spacing for modern look
+            },
+            headerTintColor: Colors.white, // 👈 makes back button white
+          }}
+        />
+        <Stack.Screen
+          name={Screens.ViewFollowUpScreen}
+          component={ViewFollowUpScreen}
+          options={{
+            headerShown: true,
+            title: 'Follow Up', // 👈 friendlier title
+            headerBackground: () => (
+              <LinearGradient
+                colors={statusGradients.FollowUp}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
+            headerShadowVisible: true,
+            headerTitleStyle: {
+              ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
+            },
+            headerTintColor: Colors.white, // 👈 makes back button white
+          }}
+        />
+        <Stack.Screen
+          name={Screens.ViewReciverScreen}
+          component={ViewReciverScreen}
+          options={{
+            headerShown: true,
+            title: 'Reciver', // 👈 friendlier title
+            headerBackground: () => (
+              <LinearGradient
+                colors={statusGradients.Reciver}
+                style={{ flex: 1 }}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+              />
+            ),
+            headerShadowVisible: false,
+            // headerTitleAlign: 'center', // 👈 center the title
+            headerTitleStyle: {
+              ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
+              // letterSpacing: 1, // spacing for modern look
+            },
+            headerTintColor: Colors.white, // 👈 makes back button white
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

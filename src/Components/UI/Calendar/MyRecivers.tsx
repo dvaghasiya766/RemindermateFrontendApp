@@ -1,10 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import CardTitle from '../Text/CardTitle';
 import CardDesc from '../Text/CardDesc';
 import { Colors } from '../../../Utils/Colors';
 import { CommonStylesFn } from '../../../Utils/CommonStyles';
 import { Fonts } from '../../../Utils/Fonts';
+import { Screens } from '../../../Utils/Const';
+import { navigate } from '../../../Navigations/NavigationServices';
 
 interface MyReciversProps {
   name: string;
@@ -14,7 +16,10 @@ interface MyReciversProps {
 
 const MyRecivers = ({ name, email, color }: MyReciversProps) => {
   return (
-    <View style={styles.rootContainer}>
+    <Pressable
+      style={styles.rootContainer}
+      onPress={() => navigate(Screens.ViewReciverScreen)}
+    >
       <View style={[styles.avatarContainer, , { backgroundColor: color }]}>
         <Text style={{ ...CommonStylesFn.text(4, Colors.white, Fonts.medium) }}>
           {name[0].toLocaleUpperCase()}
@@ -24,7 +29,7 @@ const MyRecivers = ({ name, email, color }: MyReciversProps) => {
         <CardTitle>{name}</CardTitle>
         <CardDesc style={{ marginTop: 0 }}>{email}</CardDesc>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

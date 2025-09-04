@@ -63,7 +63,7 @@ export const Colors = {
   gradientGreenDark: '#45A049',
   gradientBlue: '#2196F3',
   gradientBlueDark: '#1976D2',
-  gradientPink: '#E91E63',
+  gradientPink: '#c17388',
   gradientPinkDark: '#C2185B',
   gradientRed: '#F44336',
   gradientRedDark: '#D32F2F',
@@ -71,6 +71,8 @@ export const Colors = {
   gradientOrangeDark: '#F57C00',
   gradientGray: '#9E9E9E',
   gradientGrayDark: '#757575',
+  gradientPurple: '#9C27B0', // medium purple
+  gradientPurpleDark: '#6A1B9A', // deep purple
 };
 
 export const gradientColors = [
@@ -82,13 +84,21 @@ export const gradientColors = [
 // Status gradient colors for AgencyItem
 export type GradientTuple = (string | number)[];
 export const statusGradients: Record<
-  'active' | 'inactive' | 'pending' | 'default' | 'primary',
+  | 'active'
+  | 'inactive'
+  | 'pending'
+  | 'default'
+  | 'primary'
+  | 'FollowUp'
+  | 'Reciver',
   GradientTuple
 > = {
   active: [Colors.gradientGreen, Colors.gradientGreenDark],
   inactive: [Colors.gradientRed, Colors.gradientRedDark],
   pending: [Colors.gradientOrange, Colors.gradientOrangeDark],
   default: [Colors.gradientGray, Colors.gradientGrayDark],
+  FollowUp: [Colors.gradientPink, Colors.gradientPinkDark],
+  Reciver: [Colors.gradientPurple, Colors.gradientPurpleDark],
   primary: ['#60a5fa', '#a78bfa', '#e2e8f0'],
 };
 

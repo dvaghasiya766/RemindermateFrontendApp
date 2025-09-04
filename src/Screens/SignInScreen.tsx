@@ -15,6 +15,7 @@ import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../Store/Auth';
 import { useAppDispatch, useAppSelector } from '../Hooks/StoreHooks';
 import Loader from '../Utils/AppLoader';
+import { fetchAllProducts, fetchProducts } from '../Components/Function/APIs';
 
 const SignInScreen = () => {
   const [enteredEmail, setEnteredEmail] = React.useState('');
@@ -28,31 +29,70 @@ const SignInScreen = () => {
 
   const dispatch = useDispatch();
 
-  const handleSignIn = () => {
+  // const handleSignIn = () => {
+  //   Loader.isLoading(true);
+  //   if (!enteredEmail || !enteredPassword) {
+  //     Alert.alert('Missing Fields', 'Please enter both email and password.', [
+  //       { text: 'OK' },
+  //     ]);
+  //     return;
+  //   }
+
+  //   const isValidUser = DUMMY_USERS.find(
+  //     user => user.email === enteredEmail && user.password === enteredPassword,
+  //   );
+
+  //   if (!isValidUser) {
+  //     Alert.alert("Don't lie!", 'You know that this is wrong...', [
+  //       { text: 'Sorry!', style: 'cancel' },
+  //     ]);
+  //     return;
+  //   }
+
+  //   // dispatch(setUser(isValidUser));
+  //   // dispatch(setToken('dummy-auth-token'));
+
+  //   console.log('✅ Sign-In Successful!', isValidUser);
+
+  //   setTimeout(() => {
+  //     Loader.isLoading(false);
+  //   }, 10000); // Simulate a delay for better UX
+  // };
+
+  const handleSignIn = async () => {
+    Loader.isLoading(true);
+
     if (!enteredEmail || !enteredPassword) {
       Alert.alert('Missing Fields', 'Please enter both email and password.', [
         { text: 'OK' },
       ]);
+      Loader.isLoading(false); // 👈 hide loader immediately
       return;
     }
 
     const isValidUser = DUMMY_USERS.find(
-      user => user.email === enteredEmail && user.password === enteredPassword,
+      user =>
+        user.email.toLowerCase() === enteredEmail.toLowerCase() &&
+        user.password === enteredPassword,
     );
 
     if (!isValidUser) {
       Alert.alert("Don't lie!", 'You know that this is wrong...', [
         { text: 'Sorry!', style: 'cancel' },
       ]);
+      Loader.isLoading(false); // 👈 hide loader if invalid
       return;
     }
 
-    // dispatch(setUser(isValidUser));
-    // dispatch(setToken('dummy-auth-token'));
+    // await new Promise((resolve: any) => setTimeout(resolve, 10000));
 
+    Loader.isLoading(false);
+    const data = await fetchAllProducts(); // Example ID
+    console.log(data);
     console.log('✅ Sign-In Successful!', isValidUser);
-    Loader.isLoading(true);
-    // replace(Screens.BottomTab);
+    dispatch(setUser(isValidUser));
+    dispatch(setToken('dummy-auth-token'));
+    replace(Screens.BottomTab);
   };
 
   return (

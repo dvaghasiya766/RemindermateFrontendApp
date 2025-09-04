@@ -1,11 +1,13 @@
 export default class Loader {
-  static loader: any;
+  static loaderRef: any;
 
-  static setLoader = (loader: any) => {
-    this.loader = loader;
+  static setLoader = (ref: any) => {
+    this.loaderRef = ref;
   };
 
   static isLoading = (check: boolean) => {
-    this.loader = check;
+    if (this.loaderRef) {
+      this.loaderRef.showLoader(check);
+    }
   };
 }

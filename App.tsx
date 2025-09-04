@@ -7,14 +7,13 @@ import AppLoader from './src/Components/UI/Loader';
 import Loader from './src/Utils/AppLoader';
 
 function App() {
-  console.log('loading state:', Loader.loader);
   return (
     <>
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <StatusBar barStyle={'light-content'} />
           <Navigation />
-          <AppLoader visible={Loader.loader} />
+          <AppLoader ref={e => Loader.setLoader(e)} />
         </PersistGate>
       </Provider>
     </>

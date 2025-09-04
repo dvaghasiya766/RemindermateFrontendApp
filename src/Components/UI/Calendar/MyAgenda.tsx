@@ -1,9 +1,11 @@
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Pressable } from 'react-native';
 import React from 'react';
 import { Colors } from '../../../Utils/Colors';
 import CardTitle from '../Text/CardTitle';
 import CardDesc from '../Text/CardDesc';
 import CardTime from '../Text/CardTime';
+import { navigate } from '../../../Navigations/NavigationServices';
+import { Screens } from '../../../Utils/Const';
 
 interface MyAgendaProps {
   title: string;
@@ -29,7 +31,12 @@ const MyAgenda = ({
       : Colors.warning;
 
   return (
-    <View style={styles.shadowWrapper}>
+    <Pressable
+      style={styles.shadowWrapper}
+      onPress={() => {
+        navigate(Screens.ViewFollowUpScreen);
+      }}
+    >
       <View style={styles.rootContainer}>
         {/* Left Indicator */}
         <View
@@ -62,7 +69,7 @@ const MyAgenda = ({
           </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 };
 

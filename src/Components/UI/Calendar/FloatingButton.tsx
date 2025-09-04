@@ -14,6 +14,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import Ionicons from '@react-native-vector-icons/ionicons';
 import { Colors } from '../../../Utils/Colors'; // your theme file
+import { navigate } from '../../../Navigations/NavigationServices';
+import { Screens } from '../../../Utils/Const';
 
 interface FloatingButtonProps {
   bgColor: string;
@@ -50,17 +52,17 @@ const FloatingButton = forwardRef<
   }));
 
   const followUpStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(-70 * offset.value) }],
+    transform: [{ translateY: withSpring(-55 * offset.value) }],
     opacity: offset.value,
   }));
 
   const receiverStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(-140 * offset.value) }],
+    transform: [{ translateY: withSpring(-110 * offset.value) }],
     opacity: offset.value,
   }));
 
   const profileStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: withSpring(-210 * offset.value) }],
+    transform: [{ translateY: withSpring(-165 * offset.value) }],
     opacity: offset.value,
   }));
 
@@ -70,33 +72,30 @@ const FloatingButton = forwardRef<
       <Animated.View style={[styles.option, profileStyle]}>
         <TouchableOpacity
           style={[styles.smallButton, { backgroundColor: secondaryColor }]}
-          onPress={() => console.log('Update Profile')}
+          onPress={() => navigate(Screens.NotificationScreen)}
         >
-          <Ionicons name="person" size={22} color={iconColor} />
+          <Ionicons name="log-out" size={22} color={iconColor} />
         </TouchableOpacity>
-        {/* <Text style={styles.label}>Update Profile</Text> */}
       </Animated.View>
 
       {/* Add Receiver */}
       <Animated.View style={[styles.option, receiverStyle]}>
         <TouchableOpacity
           style={[styles.smallButton, { backgroundColor: secondaryColor }]}
-          onPress={() => console.log('Add Receiver')}
+          onPress={() => navigate(Screens.AddReciverScreen)}
         >
-          <Ionicons name="people" size={22} color={iconColor} />
+          <Ionicons name="person-add" size={22} color={iconColor} />
         </TouchableOpacity>
-        {/* <Text style={styles.label}>Add Receiver</Text> */}
       </Animated.View>
 
       {/* Add FollowUp */}
       <Animated.View style={[styles.option, followUpStyle]}>
         <TouchableOpacity
           style={[styles.smallButton, { backgroundColor: secondaryColor }]}
-          onPress={() => console.log('Add FollowUp')}
+          onPress={() => navigate(Screens.AddFollowUpScreen)}
         >
           <Ionicons name="calendar" size={22} color={iconColor} />
         </TouchableOpacity>
-        {/* <Text style={styles.label}>Add FollowUp</Text> */}
       </Animated.View>
 
       {/* Main Floating Button */}
@@ -148,10 +147,5 @@ const styles = StyleSheet.create({
     right: 8,
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  label: {
-    marginRight: 10,
-    color: Colors.textPrimary,
-    fontSize: 13,
   },
 });
