@@ -22,6 +22,7 @@ import {
   resendOtpAPIcm,
   verifyRegisterOtpAPIcm,
 } from '../Components/Function/APIs';
+import { CommonStylesFn } from '../Utils/CommonStyles';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
@@ -35,10 +36,9 @@ const OTPScreen = ({ route }: Props) => {
   const [otp, setOtp] = React.useState('');
   // console.log(otpInputRef);
 
-  const resendOtp = () => {
-    const response: any = resendOtpAPIcm({ email: mailId });
+  const resendOtp = async () => {
+    const response: any = await resendOtpAPIcm({ email: mailId });
     const data = response.data;
-
     if (!data.success) {
       Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
     }
@@ -96,12 +96,21 @@ const OTPScreen = ({ route }: Props) => {
               autoFocus={true}
               textInputStyle={styles.otpInput}
               containerStyle={styles.otpContainer}
+              onSubmitEditing={handleOTP}
             />
           </View>
           <PrimaryButton title="Verify Now" onPress={handleOTP} />
           {useForActivation && (
-            <Text onPress={resendOtp}>Resend OTP?</Text>
-          )}{' '}
+            <Text
+              style={{
+                ...CommonStylesFn.text(3.5, Colors.primary, Fonts.medium),
+                marginTop: 5,
+              }}
+              onPress={resendOtp}
+            >
+              Resend OTP?
+            </Text>
+          )}
         </ScrollView>
       </View>
     </Gradient>

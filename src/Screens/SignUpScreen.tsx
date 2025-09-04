@@ -110,6 +110,7 @@ const SignInScreen = () => {
               autoCapitalize="none"
               autoCorrect={false}
               returnKeyType="send"
+              onSubmitEditing={handleSignUp}
             />
           </View>
           <PrimaryButton title="Sign Up Now" onPress={handleSignUp} />
