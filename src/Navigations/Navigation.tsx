@@ -190,19 +190,6 @@ const Navigation = () => {
           component={ForgetPasswordScreen}
         />
         <Stack.Screen name={Screens.BottomTab} component={BottomTab} />
-        {/* <Stack.Screen
-          name={Screens.AddFollowUpScreen}
-          component={AddFollowUpScreen}
-          options={{
-            headerShown: true,
-            title: 'Add FollowUp',
-            headerStyle: { backgroundColor: Colors.primary },
-            headerShadowVisible: false,
-            headerTitleStyle: {
-              ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
-            },
-          }}
-        /> */}
         <Stack.Screen
           name={Screens.AddFollowUpScreen}
           component={AddFollowUpScreen}
