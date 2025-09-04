@@ -1,72 +1,81 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import React, { useRef } from 'react';
 import Gradient from '../Components/UI/Gradient';
 import { statusGradients } from '../Utils/Colors';
 import Title from '../Components/UI/Text/Title';
 import AppTextInput from '../Components/UI/Inputs/AppTextInput';
 import PrimaryButton from '../Components/UI/Buttons/PrimaryButton';
-import { navigate } from '../Navigations/NavigationServices';
+import { replace } from '../Navigations/NavigationServices';
 import { Screens } from '../Utils/Const';
 import { RootStackParamList } from '../Navigations/Navigation';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import {
+  forgotPasswordAPIcm,
+  resetPasswordAPIcm,
+} from '../Components/Function/APIs';
 
-const handleRequestForOTP = () => {
-  console.log('OTP Requested');
-};
+type Props = NativeStackScreenProps<RootStackParamList>;
 
-const handleRequestForChangePassword = () => {
-  console.log('Change Password Requested');
-  navigate(Screens.OTPScreen);
-};
+const ForgetPasswordScreen = ({ route }: Props) => {
+  const { mailId }: { mailId?: string } = route.params ?? {};
 
-type Props = NativeStackScreenProps<
-  RootStackParamList,
-  Screens.ForgetPasswordScreen
->;
+  const passwordRef = useRef<TextInput>(null);
+  const repasswordRef = useRef<TextInput>(null);
+  const [enteredEmail, setEnteredEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [repassword, setRePassword] = React.useState('');
 
-const ForgetPasswordScreen = ({ route, navigation }: Props) => {
-  const { showEmail } = route.params ?? { showEmail: true }; // safely access params
-  // const { showEmail } = route.params;
+  const handleRequestForOTP = async () => {
+    if (!enteredEmail) {
+      Alert.alert('Missing Fields', 'Please Enter Email Address.', [
+        { text: 'OK' },
+      ]);
+      return;
+    }
 
-  const EmailField: React.FC = () => {
-    const emailRef = useRef<TextInput>(null);
-    return (
-      <AppTextInput
-        ref={emailRef}
-        label="Enter Your Email"
-        autoComplete="email"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
-        returnKeyType="send"
-        onSubmitEditing={handleRequestForChangePassword}
-      />
-    );
+    const response: any = await forgotPasswordAPIcm({ email: enteredEmail });
+    const data = response?.data;
+
+    if (!data?.success) {
+      Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
+      return;
+    }
+
+    Alert.alert('Success', data.message, [{ text: 'OK' }]);
+
+    console.log('OTP Requested', response);
+    replace(Screens.OTPScreen, {
+      mailId: enteredEmail,
+      useForActivation: false,
+    });
   };
 
-  const ResetPasswordFields: React.FC = () => {
-    const passwordRef = useRef<TextInput>(null);
-    const repasswordRef = useRef<TextInput>(null);
-    return (
-      <>
-        <AppTextInput
-          isPsw
-          ref={passwordRef}
-          label="Create New Password"
-          returnKeyType="next"
-          onSubmitEditing={() => repasswordRef.current?.focus()}
-        />
-        <AppTextInput
-          isPsw
-          ref={repasswordRef}
-          label="Re-Enter Password"
-          secureTextEntry
-          autoCapitalize="none"
-          autoCorrect={false}
-          returnKeyType="send"
-        />
-      </>
-    );
+  const handleRequestForChangePassword = async () => {
+    if (!password || !repassword) {
+      Alert.alert('Missing Fields', 'Please both Fields.', [{ text: 'OK' }]);
+      return;
+    }
+
+    const response: any = await resetPasswordAPIcm({
+      email: mailId,
+      password: password,
+      confirm_password: repassword,
+    });
+    const data = response?.data;
+
+    if (!data?.success) {
+      Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
+      return;
+    }
+    Alert.alert('Success', data.message, [{ text: 'OK' }]);
+    replace(Screens.SignInScreen);
   };
 
   return (
@@ -80,11 +89,44 @@ const ForgetPasswordScreen = ({ route, navigation }: Props) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <Title>Forget Password</Title>
           <View style={styles.inputContainer}>
-            {showEmail ? <EmailField /> : <ResetPasswordFields />}
+            {mailId ? (
+              <>
+                <AppTextInput
+                  isPsw
+                  ref={passwordRef}
+                  setEnteredText={setPassword}
+                  label="Create New Password"
+                  returnKeyType="next"
+                  onSubmitEditing={() => repasswordRef.current?.focus()}
+                />
+                <AppTextInput
+                  isPsw
+                  ref={repasswordRef}
+                  setEnteredText={setRePassword}
+                  label="Re-Enter Password"
+                  secureTextEntry
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  returnKeyType="send"
+                  onSubmitEditing={handleRequestForChangePassword}
+                />
+              </>
+            ) : (
+              <AppTextInput
+                // ref={emailRef}
+                setEnteredText={setEnteredEmail}
+                label="Enter Your Email"
+                autoCapitalize="none"
+                autoCorrect={false}
+                onSubmitEditing={handleRequestForOTP} // 👈 jump to Name
+              />
+            )}
           </View>
           <PrimaryButton
-            title={showEmail ? 'Forget Now' : 'Reset Now'}
-            onPress={handleRequestForChangePassword}
+            title={mailId ? 'Reset Now' : 'Forget Now'}
+            onPress={
+              mailId ? handleRequestForChangePassword : handleRequestForOTP
+            }
           />
         </ScrollView>
       </View>

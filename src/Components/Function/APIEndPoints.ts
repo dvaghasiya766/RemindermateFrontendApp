@@ -1,9 +1,0 @@
-export const AUTH_ENDPOINT = '/auth';
-export const USER_ENDPOINT = '/user';
-export const REMINDERS_ENDPOINT = '/reminders';
-export const FOLLOWUPS_ENDPOINT = '/followups';
-export const RECIVERS_ENDPOINT = '/recivers';
-export const STATISTICS_ENDPOINT = '/statistics';
-export const NOTIFICATIONS_ENDPOINT = '/notifications';
-export const REPORTS_ENDPOINT = '/reports';
-export const SETTINGS_ENDPOINT = '/settings';

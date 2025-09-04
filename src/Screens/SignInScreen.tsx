@@ -10,12 +10,11 @@ import { Screens } from '../Utils/Const';
 import ChangeStackText from '../Components/UI/Text/ChangeStackText';
 import NavigateButton from '../Components/UI/Buttons/NavigateButton';
 import { replace } from '../Navigations/NavigationServices';
-import { DUMMY_USERS } from '../Data/dummy_data';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../Store/Auth';
 import { useAppDispatch, useAppSelector } from '../Hooks/StoreHooks';
 import Loader from '../Utils/AppLoader';
-import { fetchAllProducts, fetchProducts } from '../Components/Function/APIs';
+import { signInAPIc } from '../Components/Function/APIs';
 
 const SignInScreen = () => {
   const [enteredEmail, setEnteredEmail] = React.useState('');
@@ -29,69 +28,38 @@ const SignInScreen = () => {
 
   const dispatch = useDispatch();
 
-  // const handleSignIn = () => {
-  //   Loader.isLoading(true);
-  //   if (!enteredEmail || !enteredPassword) {
-  //     Alert.alert('Missing Fields', 'Please enter both email and password.', [
-  //       { text: 'OK' },
-  //     ]);
-  //     return;
-  //   }
-
-  //   const isValidUser = DUMMY_USERS.find(
-  //     user => user.email === enteredEmail && user.password === enteredPassword,
-  //   );
-
-  //   if (!isValidUser) {
-  //     Alert.alert("Don't lie!", 'You know that this is wrong...', [
-  //       { text: 'Sorry!', style: 'cancel' },
-  //     ]);
-  //     return;
-  //   }
-
-  //   // dispatch(setUser(isValidUser));
-  //   // dispatch(setToken('dummy-auth-token'));
-
-  //   console.log('✅ Sign-In Successful!', isValidUser);
-
-  //   setTimeout(() => {
-  //     Loader.isLoading(false);
-  //   }, 10000); // Simulate a delay for better UX
-  // };
-
   const handleSignIn = async () => {
-    Loader.isLoading(true);
-
     if (!enteredEmail || !enteredPassword) {
       Alert.alert('Missing Fields', 'Please enter both email and password.', [
         { text: 'OK' },
       ]);
-      Loader.isLoading(false); // 👈 hide loader immediately
       return;
     }
 
-    const isValidUser = DUMMY_USERS.find(
-      user =>
-        user.email.toLowerCase() === enteredEmail.toLowerCase() &&
-        user.password === enteredPassword,
-    );
+    const credentials = {
+      email: enteredEmail,
+      password: enteredPassword,
+    };
 
-    if (!isValidUser) {
-      Alert.alert("Don't lie!", 'You know that this is wrong...', [
-        { text: 'Sorry!', style: 'cancel' },
-      ]);
-      Loader.isLoading(false); // 👈 hide loader if invalid
+    const response: any = await signInAPIc(credentials);
+
+    const data = response?.data;
+    if (!data?.success) {
+      Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
+      return;
+    }
+    if (data?.navigate) {
+      Alert.alert('Inactive', data.message, [{ text: 'OK' }]);
+      replace(Screens.OTPScreen, {
+        mailId: enteredEmail,
+        useForActivation: true,
+      });
       return;
     }
 
-    // await new Promise((resolve: any) => setTimeout(resolve, 10000));
-
-    Loader.isLoading(false);
-    const data = await fetchAllProducts(); // Example ID
-    console.log(data);
-    console.log('✅ Sign-In Successful!', isValidUser);
-    dispatch(setUser(isValidUser));
-    dispatch(setToken('dummy-auth-token'));
+    console.log('Sign In Response:', response);
+    dispatch(setUser({ ...data.data }));
+    dispatch(setToken(data.token));
     replace(Screens.BottomTab);
   };
 
@@ -141,7 +109,6 @@ const SignInScreen = () => {
               screen={Screens.ForgetPasswordScreen}
               navigateText={'Password'}
               normalText={'If Remember'}
-              params={{ showEmail: true }}
             />
           </View>
         </ScrollView>

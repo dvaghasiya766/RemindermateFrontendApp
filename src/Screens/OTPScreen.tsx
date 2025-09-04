@@ -1,4 +1,11 @@
-import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
 import React, { useRef } from 'react';
 import Gradient from '../Components/UI/Gradient';
 import { Colors, statusGradients } from '../Utils/Colors';
@@ -7,15 +14,67 @@ import PrimaryButton from '../Components/UI/Buttons/PrimaryButton';
 import OTPTextView from 'react-native-otp-textinput';
 import { Fonts } from '../Utils/Fonts';
 import { replace } from '../Navigations/NavigationServices';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../Navigations/Navigation';
+import { Screens } from '../Utils/Const';
+import {
+  forgotPasswordOTPAPIcm,
+  resendOtpAPIcm,
+  verifyRegisterOtpAPIcm,
+} from '../Components/Function/APIs';
 
-const handleOTP = () => {
-  replace('ForgetPasswordScreen', { showEmail: false });
-};
+type Props = NativeStackScreenProps<RootStackParamList>;
 
-const OTPScreen = () => {
+const OTPScreen = ({ route }: Props) => {
+  const {
+    mailId,
+    useForActivation = false,
+  }: { mailId?: string; useForActivation?: boolean } = route.params ?? {};
+
   const otpInputRef = useRef<OTPTextView>(null);
+  const [otp, setOtp] = React.useState('');
+  // console.log(otpInputRef);
 
-  console.log(otpInputRef);
+  const resendOtp = () => {
+    const response: any = resendOtpAPIcm({ email: mailId });
+    const data = response.data;
+
+    if (!data.success) {
+      Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
+    }
+    Alert.alert('Success', data.message, [{ text: 'OK' }]);
+  };
+
+  const handleOTP = async () => {
+    const otpData = {
+      email: mailId,
+      otp: otp,
+    };
+
+    if (useForActivation) {
+      const response: any = await verifyRegisterOtpAPIcm(otpData);
+      const data = response.data;
+
+      if (!data.success) {
+        Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
+        return;
+      }
+      console.log('OTP Verification Response:', data);
+      replace(Screens.SignInScreen);
+      return;
+    }
+
+    const response: any = await forgotPasswordOTPAPIcm(otpData);
+    const data = response.data;
+
+    if (!data.success) {
+      Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
+      return;
+    }
+
+    console.log('OTP Verified', response);
+    replace(Screens.ForgetPasswordScreen, { mailId: mailId });
+  };
 
   return (
     <Gradient
@@ -33,13 +92,16 @@ const OTPScreen = () => {
               inputCount={6}
               tintColor={Colors.primary} // active border
               offTintColor={Colors.gray500} // inactive border
-              handleTextChange={otp => console.log('OTP:', otp)}
+              handleTextChange={o => setOtp(o)}
               autoFocus={true}
               textInputStyle={styles.otpInput}
               containerStyle={styles.otpContainer}
             />
           </View>
           <PrimaryButton title="Verify Now" onPress={handleOTP} />
+          {useForActivation && (
+            <Text onPress={resendOtp}>Resend OTP?</Text>
+          )}{' '}
         </ScrollView>
       </View>
     </Gradient>

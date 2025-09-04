@@ -1,4 +1,4 @@
-import { ScrollView, StyleSheet, TextInput, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, TextInput, View } from 'react-native';
 import React, { useRef } from 'react';
 // Custom Components
 import Gradient from '../Components/UI/Gradient';
@@ -8,11 +8,8 @@ import AppTextInput from '../Components/UI/Inputs/AppTextInput';
 import PrimaryButton from '../Components/UI/Buttons/PrimaryButton';
 import { Screens } from '../Utils/Const';
 import NavigateButton from '../Components/UI/Buttons/NavigateButton';
-import { navigate } from '../Navigations/NavigationServices';
-
-const handleSignUp = () => {
-  navigate(Screens.SignInScreen);
-};
+import { navigate, replace } from '../Navigations/NavigationServices';
+import { signUpAPIc } from '../Components/Function/APIs';
 
 const SignInScreen = () => {
   const [enteredEmail, setEnteredEmail] = React.useState('');
@@ -24,6 +21,47 @@ const SignInScreen = () => {
   const nameRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
   const repasswordRef = useRef<TextInput>(null);
+
+  const handleSignUp = async () => {
+    if (
+      !enteredEmail ||
+      !enteredName ||
+      !enteredPassword ||
+      !enteredRePassword
+    ) {
+      Alert.alert('Missing Fields', 'All Fields are required.', [
+        { text: 'OK' },
+      ]);
+      return;
+    }
+
+    const userData = {
+      name: enteredName,
+      email: enteredEmail,
+      password: enteredPassword,
+      confirm_password: enteredRePassword,
+    };
+
+    const response: any = await signUpAPIc(userData);
+    const data = response?.data;
+
+    if (!response.data.success) {
+      let errorText = '';
+
+      if (data.errors) {
+        errorText = Object.entries(data.errors)
+          .map(([field, messages]) => `${messages.join('\n')}`)
+          .join('\n');
+      }
+      Alert.alert(`Error ${response.status}`, errorText, [{ text: 'OK' }]);
+      return;
+    }
+
+    replace(Screens.OTPScreen, {
+      mailId: enteredEmail,
+      useForActivation: true,
+    });
+  };
 
   return (
     <Gradient
@@ -37,6 +75,15 @@ const SignInScreen = () => {
           <Title>Sign Up Here</Title>
           <View style={styles.inputContainer}>
             <AppTextInput
+              ref={nameRef}
+              setEnteredText={setEnteredName}
+              label="Set Your Name"
+              autoCapitalize="words"
+              autoCorrect={true}
+              returnKeyType="next"
+              onSubmitEditing={() => emailRef.current?.focus()}
+            />
+            <AppTextInput
               ref={emailRef}
               setEnteredText={setEnteredEmail}
               label="Enter Your Email"
@@ -44,15 +91,6 @@ const SignInScreen = () => {
               autoCapitalize="none"
               returnKeyType="next"
               autoCorrect={false}
-              onSubmitEditing={() => nameRef.current?.focus()}
-            />
-            <AppTextInput
-              ref={nameRef}
-              setEnteredText={setEnteredName}
-              label="Set Your Name"
-              autoCapitalize="words"
-              autoCorrect={true}
-              returnKeyType="next"
               onSubmitEditing={() => passwordRef.current?.focus()}
             />
             <AppTextInput

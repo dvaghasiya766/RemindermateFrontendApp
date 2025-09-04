@@ -29,8 +29,8 @@ import LinearGradient from 'react-native-linear-gradient';
 export type RootStackParamList = {
   SignInScreen: undefined;
   SignUpScreen: undefined;
-  OTPScreen: undefined;
-  ForgetPasswordScreen: { showEmail: boolean };
+  OTPScreen: { mailId: string; useForActivation: boolean };
+  ForgetPasswordScreen: { mailId: string | undefined };
   BottomTab: undefined;
   CalendarViewScreen: undefined;
   FollowUpScreen: undefined;

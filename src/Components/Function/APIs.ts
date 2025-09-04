@@ -1,31 +1,132 @@
-import { API_BASE_URL } from './APIConfig';
+import APICall from '../../Networks/ApiCall';
+import { EndPoints } from '../../Networks/EndPoints';
+import Loader from '../../Utils/AppLoader';
 
-const fetchProducts = async (id: number) => {
+const signUpAPIc = async (userData: object) => {
   try {
-    const response = await fetch(API_BASE_URL + id);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    return data;
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.register,
+      payload: userData,
+      removeToken: true,
+    });
+    return response;
   } catch (error) {
-    console.error('Error fetching products:', error);
-    throw error;
+    return error;
+  } finally {
+    Loader.isLoading(false);
   }
 };
 
-const fetchAllProducts = async () => {
+const signInAPIc = async (credentials: object) => {
   try {
-    const response = await fetch(API_BASE_URL);
-    if (!response.ok) {
-      throw new Error('Network response was not ok');
-    }
-    const data = await response.json();
-    return data;
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.login,
+      payload: credentials,
+      removeToken: true,
+    });
+    return response;
   } catch (error) {
-    console.error('Error fetching users:', error);
-    throw error;
+    return error;
+  } finally {
+    Loader.isLoading(false);
   }
 };
 
-export { fetchProducts, fetchAllProducts };
+const forgotPasswordAPIcm = async (emailData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.forgotpassword,
+      payload: emailData,
+      removeToken: true,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const forgotPasswordOTPAPIcm = async (otpData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.forgotpasswordotp,
+      payload: otpData,
+      removeToken: true,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const resetPasswordAPIcm = async (passwordData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.resetpassword,
+      payload: passwordData,
+      removeToken: true,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const verifyRegisterOtpAPIcm = async (otpData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.verifyRegisterOtp,
+      payload: otpData,
+      removeToken: true,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const resendOtpAPIcm = async (emailData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.resendotp,
+      payload: emailData,
+      removeToken: true,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+export {
+  signUpAPIc,
+  signInAPIc,
+  forgotPasswordAPIcm,
+  forgotPasswordOTPAPIcm,
+  resetPasswordAPIcm,
+  verifyRegisterOtpAPIcm,
+  resendOtpAPIcm,
+};

@@ -9,7 +9,7 @@ import {
 import { Colors } from '../../../Utils/Colors';
 import { Fonts } from '../../../Utils/Fonts';
 import { RootStackParamList } from '../../../Navigations/Navigation';
-import { navigate } from '../../../Navigations/NavigationServices';
+import { navigate, replace } from '../../../Navigations/NavigationServices';
 
 interface NavigateButtonProps {
   title: string;
@@ -23,7 +23,7 @@ export default function NavigateButton({
   params,
 }: NavigateButtonProps) {
   const navigateTo = () => {
-    navigate(screen, params);
+    replace(screen, params);
   };
 
   return (
@@ -64,15 +64,3 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.gradientBlueDark,
   },
 });
-
-{
-  /* <NavigateButton
-  title="Sign in with Facebook"
-  onPress={() =>
-    Alert.alert(
-      "Forbidden 403!",
-      "Currently Not Available this Functionality..."
-    )
-  }
-/>; */
-}
