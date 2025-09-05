@@ -1,19 +1,13 @@
-import { useState } from 'react';
-import {
-  Button,
-  Modal,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import ColorPicker, {
-  HueSlider,
-  OpacitySlider,
   Panel1,
+  HueSlider,
   Preview,
-  Swatches,
+  OpacitySlider,
 } from 'reanimated-color-picker';
+import ReactNativeModal from 'react-native-modal';
+import { runOnJS } from 'react-native-reanimated';
 
 interface ColorInputProps {
   showModal: boolean;
@@ -22,104 +16,104 @@ interface ColorInputProps {
   setSelectedColor: (value: string) => void;
 }
 
-export default function ColorInput({
+const ColorInput: React.FC<ColorInputProps> = ({
   showModal,
   setShowModal,
   selectedColor,
   setSelectedColor,
-}: ColorInputProps) {
-  const onSelectColor = ({ hex }: { hex: string }) => {
-    setSelectedColor(hex);
+}) => {
+  // wrapped in worklet-safe callback
+  const onSelectColor = (color: { hex: string }) => {
+    'worklet';
+    runOnJS(setSelectedColor)(color.hex);
   };
 
   return (
-    <Modal visible={showModal} animationType="fade" transparent>
-      <View style={styles.overlay}>
-        <View style={styles.modalContainer}>
-          <Text style={styles.title}>Pick a Color</Text>
+    <ReactNativeModal
+      animationIn={'zoomIn'}
+      animationOut={'zoomOut'}
+      isVisible={showModal}
+      style={styles.modalContainer}
+      onBackdropPress={() => setShowModal(false)}
+      useNativeDriverForBackdrop={true}
+    >
+      <Text style={styles.title}>Pick a Color</Text>
 
-          <ColorPicker
-            style={{ width: '100%' }}
-            value={selectedColor}
-            onComplete={onSelectColor}
-          >
-            <Preview />
-            <Panel1 />
-            <HueSlider />
-            <OpacitySlider />
-            <Swatches />
-          </ColorPicker>
+      <ColorPicker
+        value={selectedColor}
+        onComplete={onSelectColor}
+        style={{ width: '100%' }}
+      >
+        <Preview style={styles.preview} />
+        <Panel1 style={styles.panel} />
+        <HueSlider style={styles.slider} />
+        <OpacitySlider style={styles.slider} />
+      </ColorPicker>
 
-          <View style={styles.buttonRow}>
-            <TouchableOpacity
-              style={[styles.button, styles.confirmButton]}
-              onPress={() => setShowModal(false)}
-            >
-              <Text style={styles.buttonText}>Confirm</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={[styles.button, styles.closeButton]}
-              onPress={() => setShowModal(false)}
-            >
-              <Text style={styles.buttonText}>Cancel</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+      <View style={styles.buttons}>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: '#ccc' }]}
+          onPress={() => setShowModal(false)}
+        >
+          <Text style={styles.buttonText}>Cancel</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.button, { backgroundColor: selectedColor }]}
+          onPress={() => setShowModal(false)}
+        >
+          <Text style={[styles.buttonText, { color: '#fff' }]}>Select</Text>
+        </TouchableOpacity>
       </View>
-    </Modal>
+    </ReactNativeModal>
   );
-}
+};
+
+export default ColorInput;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  overlay: {
-    flex: 1,
-    backgroundColor: 'rgba(0,0,0,0.6)',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   modalContainer: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    padding: 20,
     width: '90%',
+    alignSelf: 'center',
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 20,
     alignItems: 'center',
-    shadowColor: '#000',
-    shadowOpacity: 0.25,
-    shadowRadius: 8,
-    elevation: 5,
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: 15,
+    marginBottom: 12,
   },
-  buttonRow: {
+  preview: {
+    marginBottom: 12,
+    height: 50,
+    borderRadius: 8,
+  },
+  panel: {
+    borderRadius: 12,
+    marginBottom: 16,
+    width: '100%',
+    height: 200,
+  },
+  slider: {
+    marginBottom: 16,
+    width: '100%',
+  },
+  buttons: {
     flexDirection: 'row',
-    marginTop: 20,
     justifyContent: 'space-between',
     width: '100%',
+    marginTop: 12,
   },
   button: {
     flex: 1,
-    paddingVertical: 12,
-    marginHorizontal: 5,
-    borderRadius: 12,
+    padding: 12,
+    borderRadius: 10,
     alignItems: 'center',
-  },
-  confirmButton: {
-    backgroundColor: '#2ecc71',
-  },
-  closeButton: {
-    backgroundColor: '#e74c3c',
+    marginHorizontal: 5,
   },
   buttonText: {
-    color: '#fff',
+    fontSize: 16,
     fontWeight: '600',
   },
 });

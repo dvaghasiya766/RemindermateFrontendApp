@@ -1,37 +1,50 @@
-import { FlatList, StyleSheet, View } from 'react-native';
-import React, { useEffect, useRef } from 'react';
+import { Alert, FlatList, StyleSheet, View } from 'react-native';
+import React, { use, useEffect, useRef, useState } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 import MyRecivers from '../Components/UI/Calendar/MyRecivers';
 import FloatingButton from '../Components/UI/Calendar/FloatingButton';
 import { Colors } from '../Utils/Colors';
-import { DUMMY_RECIVERS } from '../Data/dummy_data';
-
-const recivers = DUMMY_RECIVERS.filter(reciver => reciver.creatorId === 10);
-// console.log('Recivers List:', recivers);
+import { fetchReceiversAPIcm } from '../Components/Function/APIs';
 
 const ReciverScreen = () => {
+  const [receivers, setReceivers] = useState<object[]>([]);
   const isFocused = useIsFocused();
   const floatingButtonRef = useRef<null | { toggleMenu: () => void }>(null);
 
   useEffect(() => {
     if (!isFocused) {
-      // Perform any actions needed when the screen is focused
-      // console.log('FollowUpScreen is focused');
       floatingButtonRef.current?.toggleMenu();
+    } else {
+      fetchReceivers();
     }
   }, [isFocused]);
+
+  const fetchReceivers = async () => {
+    const response: any = await fetchReceiversAPIcm();
+    const data = response.data;
+
+    if (!data.success) {
+      let errorText = data.message;
+      Alert.alert(`Error`, errorText, [{ text: 'OK' }]);
+      return;
+    }
+
+    setReceivers(data.data);
+    console.log(response);
+  };
 
   return (
     <View style={styles.rootContainer}>
       <FlatList
         renderItem={itemData => (
           <MyRecivers
+            id={itemData.item.receiver_id}
             color={itemData.item.color}
             email={itemData.item.email}
             name={itemData.item.name}
           />
         )}
-        data={recivers}
+        data={receivers}
         showsVerticalScrollIndicator={false}
       />
       <FloatingButton

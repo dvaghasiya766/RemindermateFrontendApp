@@ -12,7 +12,6 @@ import NavigateButton from '../Components/UI/Buttons/NavigateButton';
 import { replace } from '../Navigations/NavigationServices';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../Store/Auth';
-import { useAppDispatch, useAppSelector } from '../Hooks/StoreHooks';
 import { signInAPIc } from '../Components/Function/APIs';
 
 const SignInScreen = () => {
@@ -20,15 +19,6 @@ const SignInScreen = () => {
   const [enteredPassword, setEnteredPassword] = React.useState('');
 
   const dispatch = useDispatch();
-
-  // const { user, token } = useAppSelector(state => state.Auth);
-  // console.log('👤 Current User at SignInScreen:', user, token);
-
-  // // useEffect(() => {
-  // //   if (user && token) {
-  // //     replace(Screens.BottomTab);
-  // //   }
-  // // }, [user, token]);
 
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);

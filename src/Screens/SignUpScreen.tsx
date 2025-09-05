@@ -45,15 +45,23 @@ const SignInScreen = () => {
     const response: any = await signUpAPIc(userData);
     const data = response?.data;
 
-    if (!response.data.success) {
-      let errorText = '';
+    // if (!response.data.success) {
+    //   let errorText = '';
 
-      if (data.errors) {
-        errorText = Object.entries(data.errors)
-          .map(([field, messages]) => `${messages.join('\n')}`)
-          .join('\n');
-      }
-      Alert.alert(`Error ${response.status}`, errorText, [{ text: 'OK' }]);
+    //   if (data.errors) {
+    //     errorText = Object.entries(data.errors)
+    //       .map(([field, messages]) => `${messages.join('\n')}`)
+    //       .join('\n');
+    //   }
+    //   Alert.alert(`Error ${response.status}`, errorText, [{ text: 'OK' }]);
+    //   return;
+    // }
+    if (!data.success) {
+      let errorText = Object.entries(data.errors as Record<string, string[]>)
+        .map(([field, messages]) => messages.join('\n'))
+        .join('\n');
+
+      Alert.alert(`Error`, errorText, [{ text: 'OK' }]);
       return;
     }
 

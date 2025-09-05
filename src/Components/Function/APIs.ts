@@ -137,6 +137,51 @@ const addReceiverAPIcm = async (receiverData: object) => {
   }
 };
 
+const fetchReceiversAPIcm = async () => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'get',
+      url: `${EndPoints.fetchReceivers}`,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const fetchReceiverAPIcm = async (id: string) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'get',
+      url: `${EndPoints.fetchReceiver}${id}`,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const fetchFollowUpsByReceiverId = async (id: string) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'get',
+      url: `${EndPoints.fetchFollowUpsByReceiverId}${id}`,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
 const getFollowUpsByMonth = async ({
   month,
   year,
@@ -149,7 +194,6 @@ const getFollowUpsByMonth = async ({
     const response = await APICall({
       method: 'get',
       url: `${EndPoints.followupByMonth}month=${month}&year=${year}`,
-      // payload: monthData,
     });
     return response;
   } catch (error) {
@@ -168,5 +212,8 @@ export {
   verifyRegisterOtpAPIcm,
   resendOtpAPIcm,
   addReceiverAPIcm,
+  fetchReceiversAPIcm,
+  fetchReceiverAPIcm,
+  fetchFollowUpsByReceiverId,
   getFollowUpsByMonth,
 };

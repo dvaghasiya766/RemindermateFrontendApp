@@ -24,8 +24,8 @@ import { Screens } from '../Utils/Const';
 import { Colors, statusGradients } from '../Utils/Colors';
 import { Fonts } from '../Utils/Fonts';
 import { CommonStylesFn } from '../Utils/CommonStyles';
-import Ionicons from '@react-native-vector-icons/ionicons';
 import LinearGradient from 'react-native-linear-gradient';
+import Ionicons from '@react-native-vector-icons/ionicons';
 
 export type RootStackParamList = {
   StartupScreen: undefined;
@@ -41,7 +41,7 @@ export type RootStackParamList = {
   AddFollowUpScreen: undefined;
   AddReciverScreen: undefined;
   ViewFollowUpScreen: undefined;
-  ViewReciverScreen: undefined;
+  ViewReciverScreen: { id: number };
 };
 
 export type BottomTabParamList = {
@@ -124,13 +124,13 @@ const BottomTab = () => {
         name={Screens.ReciverScreen}
         component={ReciverScreen}
         options={{
-          title: 'Recivers',
+          title: 'Receivers',
           headerTitleAlign: 'center',
           headerTitleStyle: {
             ...CommonStylesFn.text(6, Colors.white, Fonts.medium),
           },
           headerStyle: { backgroundColor: Colors.accent },
-          tabBarLabel: 'Recivers',
+          tabBarLabel: 'Receivers',
           tabBarActiveTintColor: Colors.accent,
           tabBarInactiveTintColor: Colors.gray300,
           tabBarStyle: {
@@ -219,7 +219,7 @@ const Navigation = () => {
           component={AddReciverScreen}
           options={{
             headerShown: true,
-            title: 'Add New Reciver', // 👈 friendlier title
+            title: 'Add New Receiver', // 👈 friendlier title
             headerBackground: () => (
               <LinearGradient
                 colors={statusGradients.Reciver}
@@ -263,7 +263,7 @@ const Navigation = () => {
           component={ViewReciverScreen}
           options={{
             headerShown: true,
-            title: 'Reciver', // 👈 friendlier title
+            title: 'Receiver', // 👈 friendlier title
             headerBackground: () => (
               <LinearGradient
                 colors={statusGradients.Reciver}

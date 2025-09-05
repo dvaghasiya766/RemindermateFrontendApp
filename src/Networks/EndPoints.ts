@@ -8,6 +8,9 @@ export const EndPoints = {
   resetpassword: 'resetpassword',
   verifyRegisterOtp: 'verify-register-otp',
   resendotp: 'resend-otp',
-  addreceiver: 'addreceiver',
+  addreceiver: 'addreceivers',
   followupByMonth: 'followups/monthly-followups?',
+  fetchReceivers: 'receivers/getMyReceivers',
+  fetchReceiver: 'receiver/',
+  fetchFollowUpsByReceiverId: 'followups/receiver/',
 };

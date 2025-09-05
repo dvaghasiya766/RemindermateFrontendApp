@@ -9,16 +9,17 @@ import { Screens } from '../../../Utils/Const';
 import { navigate } from '../../../Navigations/NavigationServices';
 
 interface MyReciversProps {
+  id: number;
   name: string;
   email: string;
   color: string;
 }
 
-const MyRecivers = ({ name, email, color }: MyReciversProps) => {
+const MyRecivers = ({ id, name, email, color }: MyReciversProps) => {
   return (
     <Pressable
       style={styles.rootContainer}
-      onPress={() => navigate(Screens.ViewReciverScreen)}
+      onPress={() => navigate(Screens.ViewReciverScreen, { id: id })}
     >
       <View style={[styles.avatarContainer, , { backgroundColor: color }]}>
         <Text style={{ ...CommonStylesFn.text(4, Colors.white, Fonts.medium) }}>
