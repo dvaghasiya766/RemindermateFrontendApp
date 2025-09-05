@@ -1,4 +1,5 @@
 enum Screens {
+  StartupScreen = 'StartupScreen',
   CalendarViewScreen = 'CalendarViewScreen',
   FollowUpScreen = 'FollowUpScreen',
   ForgetPasswordScreen = 'ForgetPasswordScreen',

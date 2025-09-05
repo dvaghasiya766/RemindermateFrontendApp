@@ -8,26 +8,58 @@ import { Colors } from '../Utils/Colors';
 import FloatingButton from '../Components/UI/Calendar/FloatingButton';
 import { DUMMY_FOLLOWUPS, DUMMY_RECIVERS } from '../Data/dummy_data';
 import { useIsFocused } from '@react-navigation/core';
+import { getFollowUpsByMonth } from '../Components/Function/APIs';
+
+const getMonthlyFollowUps = async (
+  monthData: {
+    month: number;
+    year: number;
+  },
+  // changeFollowUp: () => void,
+) => {
+  const response: any = await getFollowUpsByMonth({ ...monthData });
+  const data = response?.data;
+  console.log(data);
+};
 
 const CalendarViewScreen = () => {
   const isFocused = useIsFocused();
+  const currentDate = new Date();
+  const [selectedDate, setSelectedDate] = useState(Date.toString());
+  const [selectedMonth, setSelectedMonth] = useState({
+    month: currentDate.getMonth(),
+    year: currentDate.getFullYear(),
+  });
+  const [followUps, setFollowUps] = useState([]);
+
   const floatingButtonRef = useRef<null | { toggleMenu: () => void }>(null);
 
   useEffect(() => {
     if (!isFocused) {
       // Perform any actions needed when the screen is focused
-      console.log('FollowUpScreen is focused');
       floatingButtonRef.current?.toggleMenu();
     }
   }, [isFocused]);
 
-  const [selectedDate, setSelectedDate] = useState(Date.toString());
+  useEffect(() => {
+    getMonthlyFollowUps(selectedMonth);
+  }, [selectedMonth]);
+  useEffect(() => {}, [selectedMonth]);
+
   const changeSelectedDate = (day: DateData) => {
     setSelectedDate(day.dateString);
   };
+  const changeSelectedMonth = (month: DateData) => {
+    setSelectedMonth({ month: month.month, year: month.year });
+  };
+
   return (
     <View style={styles.rootContainer}>
-      <Calender selectedDate={selectedDate} onDayPress={changeSelectedDate} />
+      <Calender
+        selectedDate={selectedDate}
+        onDayPress={changeSelectedDate}
+        onMonthChange={changeSelectedMonth}
+      />
       <View style={{ marginHorizontal: 10, marginBottom: 3, marginTop: 15 }}>
         <Title>FollowUps</Title>
       </View>

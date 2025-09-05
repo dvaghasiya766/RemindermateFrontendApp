@@ -1,3 +1,4 @@
+import StartupScreen from './StartupScreen';
 import CalendarViewScreen from './CalendarViewScreen';
 import FollowUpScreen from './FollowUpScreen';
 import ForgetPasswordScreen from './ForgetPasswordScreen';
@@ -12,6 +13,7 @@ import ViewFollowUpScreen from './ViewFollowUpScreen';
 import ViewReciverScreen from './ViewReciverScreen';
 
 export {
+  StartupScreen,
   CalendarViewScreen,
   FollowUpScreen,
   ForgetPasswordScreen,

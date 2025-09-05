@@ -11,7 +11,7 @@ const NotificationScreen = () => {
   useEffect(() => {
     if (!isFocused) {
       // Perform any actions needed when the screen is focused
-      console.log('FollowUpScreen is focused');
+      // console.log('FollowUpScreen is focused');
       floatingButtonRef.current?.toggleMenu();
     }
   }, [isFocused]);

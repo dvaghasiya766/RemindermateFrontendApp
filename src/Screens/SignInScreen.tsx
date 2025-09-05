@@ -1,5 +1,5 @@
 import { Alert, ScrollView, StyleSheet, TextInput, View } from 'react-native';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 // Custom Components
 import Gradient from '../Components/UI/Gradient';
 import { statusGradients } from '../Utils/Colors';
@@ -13,20 +13,25 @@ import { replace } from '../Navigations/NavigationServices';
 import { useDispatch } from 'react-redux';
 import { setToken, setUser } from '../Store/Auth';
 import { useAppDispatch, useAppSelector } from '../Hooks/StoreHooks';
-import Loader from '../Utils/AppLoader';
 import { signInAPIc } from '../Components/Function/APIs';
 
 const SignInScreen = () => {
   const [enteredEmail, setEnteredEmail] = React.useState('');
   const [enteredPassword, setEnteredPassword] = React.useState('');
 
-  // const { user } = useAppSelector(state => state.Auth);
-  // console.log('👤 Current User at SignInScreen:', user);
+  const dispatch = useDispatch();
+
+  // const { user, token } = useAppSelector(state => state.Auth);
+  // console.log('👤 Current User at SignInScreen:', user, token);
+
+  // // useEffect(() => {
+  // //   if (user && token) {
+  // //     replace(Screens.BottomTab);
+  // //   }
+  // // }, [user, token]);
 
   const emailRef = useRef<TextInput>(null);
   const passwordRef = useRef<TextInput>(null);
-
-  const dispatch = useDispatch();
 
   const handleSignIn = async () => {
     if (!enteredEmail || !enteredPassword) {
@@ -42,8 +47,9 @@ const SignInScreen = () => {
     };
 
     const response: any = await signInAPIc(credentials);
-
     const data = response?.data;
+    // console.log('Sign In Response:', response);
+
     if (!data?.success) {
       Alert.alert('Invalid', data.message, [{ text: 'OK' }]);
       return;
@@ -57,10 +63,9 @@ const SignInScreen = () => {
       return;
     }
 
-    console.log('Sign In Response:', response);
     dispatch(setUser({ ...data.data }));
     dispatch(setToken(data.token));
-    replace(Screens.BottomTab);
+    // replace(Screens.BottomTab);
   };
 
   return (

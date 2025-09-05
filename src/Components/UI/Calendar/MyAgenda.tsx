@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   indicatorContainer: {
-    width: 8,
+    width: 7,
     height: '100%',
   },
   outerContainer: {

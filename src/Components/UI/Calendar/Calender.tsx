@@ -6,12 +6,18 @@ import { Fonts } from '../../../Utils/Fonts';
 type CalendarProps = {
   selectedDate: string;
   onDayPress: (date: DateData) => void;
+  onMonthChange: (month: DateData) => void;
 };
 
-const Calender = ({ selectedDate, onDayPress }: CalendarProps) => {
+const Calender = ({
+  selectedDate,
+  onDayPress,
+  onMonthChange,
+}: CalendarProps) => {
   return (
     <Calendar
       onDayPress={onDayPress}
+      onMonthChange={onMonthChange}
       theme={{
         backgroundColor: Colors.blueBackground,
         calendarBackground: Colors.blueBackground,
@@ -58,9 +64,6 @@ const Calender = ({ selectedDate, onDayPress }: CalendarProps) => {
               },
             }
           : {}),
-      }}
-      onMonthChange={day => {
-        console.log('Month Changed: ', day);
       }}
     />
   );

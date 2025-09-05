@@ -7,7 +7,7 @@ import { Colors } from '../Utils/Colors';
 import { DUMMY_RECIVERS } from '../Data/dummy_data';
 
 const recivers = DUMMY_RECIVERS.filter(reciver => reciver.creatorId === 10);
-console.log('Recivers List:', recivers);
+// console.log('Recivers List:', recivers);
 
 const ReciverScreen = () => {
   const isFocused = useIsFocused();
@@ -16,7 +16,7 @@ const ReciverScreen = () => {
   useEffect(() => {
     if (!isFocused) {
       // Perform any actions needed when the screen is focused
-      console.log('FollowUpScreen is focused');
+      // console.log('FollowUpScreen is focused');
       floatingButtonRef.current?.toggleMenu();
     }
   }, [isFocused]);

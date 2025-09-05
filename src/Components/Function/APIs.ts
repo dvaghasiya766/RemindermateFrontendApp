@@ -121,6 +121,44 @@ const resendOtpAPIcm = async (emailData: object) => {
   }
 };
 
+const addReceiverAPIcm = async (receiverData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.addreceiver,
+      payload: receiverData,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const getFollowUpsByMonth = async ({
+  month,
+  year,
+}: {
+  month: number;
+  year: number;
+}) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'get',
+      url: `${EndPoints.followupByMonth}month=${month}&year=${year}`,
+      // payload: monthData,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
 export {
   signUpAPIc,
   signInAPIc,
@@ -129,4 +167,6 @@ export {
   resetPasswordAPIcm,
   verifyRegisterOtpAPIcm,
   resendOtpAPIcm,
+  addReceiverAPIcm,
+  getFollowUpsByMonth,
 };

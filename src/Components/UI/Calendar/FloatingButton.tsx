@@ -37,7 +37,7 @@ const FloatingButton = forwardRef<
 
   const [open, setOpen] = useState(false);
 
-  console.log('FloatingButton Rendered', open);
+  // console.log('FloatingButton Rendered', open);
   const rotation = useSharedValue(0);
   const offset = useSharedValue(0);
 

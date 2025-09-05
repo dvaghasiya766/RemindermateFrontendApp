@@ -16,6 +16,7 @@ import {
   ReciverScreen,
   SignInScreen,
   SignUpScreen,
+  StartupScreen,
   ViewFollowUpScreen,
   ViewReciverScreen,
 } from '../Screens';
@@ -27,6 +28,7 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import LinearGradient from 'react-native-linear-gradient';
 
 export type RootStackParamList = {
+  StartupScreen: undefined;
   SignInScreen: undefined;
   SignUpScreen: undefined;
   OTPScreen: { mailId: string; useForActivation: boolean };
@@ -182,6 +184,7 @@ const Navigation = () => {
       <Stack.Navigator
         screenOptions={{ headerShown: false, animation: 'slide_from_right' }}
       >
+        <Stack.Screen name={Screens.StartupScreen} component={StartupScreen} />
         <Stack.Screen name={Screens.SignInScreen} component={SignInScreen} />
         <Stack.Screen name={Screens.SignUpScreen} component={SignUpScreen} />
         <Stack.Screen name={Screens.OTPScreen} component={OTPScreen} />
