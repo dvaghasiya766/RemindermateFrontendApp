@@ -9,76 +9,99 @@ import FloatingButton from '../Components/UI/Calendar/FloatingButton';
 import { DUMMY_FOLLOWUPS, DUMMY_RECIVERS } from '../Data/dummy_data';
 import { useIsFocused } from '@react-navigation/core';
 import { getFollowUpsByMonth } from '../Components/Function/APIs';
-
-const getMonthlyFollowUps = async (
-  monthData: {
-    month: number;
-    year: number;
-  },
-  // changeFollowUp: () => void,
-) => {
-  const response: any = await getFollowUpsByMonth({ ...monthData });
-  const data = response?.data;
-  // console.log(data);
-};
+import { replace } from '../Navigations/NavigationServices';
+import { Screens } from '../Utils/Const';
+import { logOut } from '../Components/Function/handler';
+import { formatDate } from './AddFollowUpScreen';
 
 const CalendarViewScreen = () => {
   const isFocused = useIsFocused();
+  const floatingButtonRef = useRef<null | { toggleMenu: () => void }>(null);
   const currentDate = new Date();
-  const [selectedDate, setSelectedDate] = useState(Date.toString());
+  const [selectedDate, setSelectedDate] = useState(formatDate(new Date()));
   const [selectedMonth, setSelectedMonth] = useState({
     month: currentDate.getMonth(),
     year: currentDate.getFullYear(),
   });
   const [followUps, setFollowUps] = useState([]);
+  const [filteredFollowUps, setFilterFollowUps] = useState([]);
 
-  const floatingButtonRef = useRef<null | { toggleMenu: () => void }>(null);
+  const getMonthlyFollowUps = async () => {
+    const response: any = await getFollowUpsByMonth({ ...selectedMonth });
+    const data = response?.data;
+
+    if (!data.success) {
+      logOut();
+      replace(Screens.SignInScreen);
+      return;
+    }
+
+    setFollowUps(data.data);
+  };
 
   useEffect(() => {
     if (!isFocused) {
       // Perform any actions needed when the screen is focused
       floatingButtonRef.current?.toggleMenu();
+    } else {
+      getMonthlyFollowUps();
     }
   }, [isFocused]);
 
   useEffect(() => {
-    getMonthlyFollowUps(selectedMonth);
+    getMonthlyFollowUps();
   }, [selectedMonth]);
-  useEffect(() => {}, [selectedMonth]);
 
-  const changeSelectedDate = (day: DateData) => {
-    setSelectedDate(day.dateString);
-  };
   const changeSelectedMonth = (month: DateData) => {
     setSelectedMonth({ month: month.month, year: month.year });
   };
 
+  useEffect(() => {
+    if (followUps.length !== 0 && selectedDate) {
+      const dataFollowUps = followUps.filter(f => {
+        const followUpDate = new Date(f.date).toISOString().split('T')[0];
+        return followUpDate === selectedDate;
+      });
+
+      setFilterFollowUps(dataFollowUps[0]?.followups ?? []);
+    }
+  }, [selectedDate, followUps]); // runs automatically whenever selectedDate changes
+
+  const changeSelectedDate = (day: DateData) => {
+    setSelectedDate(day.dateString);
+  };
+
   return (
     <View style={styles.rootContainer}>
-      <Calender
-        selectedDate={selectedDate}
-        onDayPress={changeSelectedDate}
-        onMonthChange={changeSelectedMonth}
-      />
-      <View style={{ marginHorizontal: 10, marginBottom: 3, marginTop: 15 }}>
-        <Title>FollowUps</Title>
-      </View>
-      <FlatList
-        renderItem={itemData => (
-          <MyAgenda
-            title={itemData.item.title}
-            desc={itemData.item.description}
-            time={itemData.item.time}
-            status={itemData.item.status}
-            reciverColor={
-              DUMMY_RECIVERS.find(r => r.creatorId === itemData.item.creatorId)
-                ?.color || Colors.primary
-            }
+      {followUps.length !== 0 && (
+        <>
+          <Calender
+            followUps={followUps}
+            selectedDate={selectedDate}
+            onDayPress={changeSelectedDate}
+            onMonthChange={changeSelectedMonth}
           />
-        )}
-        data={DUMMY_FOLLOWUPS}
-        showsVerticalScrollIndicator={false}
-      />
+          <View
+            style={{ marginHorizontal: 10, marginBottom: 3, marginTop: 15 }}
+          >
+            <Title>FollowUps</Title>
+          </View>
+          <FlatList
+            renderItem={itemData => (
+              <MyAgenda
+                id={itemData.item.task_id}
+                title={itemData.item.title}
+                desc={itemData.item.description}
+                time={itemData.item.time}
+                status={itemData.item.status}
+                reciverColor={itemData.item.color}
+              />
+            )}
+            data={filteredFollowUps}
+            showsVerticalScrollIndicator={false}
+          />
+        </>
+      )}
       <FloatingButton
         ref={floatingButtonRef}
         bgColor={Colors.primary}

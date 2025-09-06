@@ -182,6 +182,37 @@ const fetchFollowUpsByReceiverId = async (id: string) => {
   }
 };
 
+const updateReceiverAPIcm = async (receiverData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'put',
+      url: `${EndPoints.updateReceiver}${receiverData.id}`,
+      payload: receiverData,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const deleteReceiver = async (id: string) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'delete',
+      url: `${EndPoints.removeReceiver}${id}`,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
 const addNewFollowUpAPIcm = async (followUpData: object) => {
   try {
     Loader.isLoading(true);
@@ -189,6 +220,21 @@ const addNewFollowUpAPIcm = async (followUpData: object) => {
       method: 'post',
       url: EndPoints.addNewFollowUp,
       payload: followUpData,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const getFollowUpsByFollowUpId = async (id: number) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'get',
+      url: `${EndPoints.followUpByFollowUpId}${id}`,
     });
     return response;
   } catch (error) {
@@ -219,6 +265,36 @@ const getFollowUpsByMonth = async ({
   }
 };
 
+const deleteFollowUp = async (id: string) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'delete',
+      url: `${EndPoints.deleteFollowUp}${id}`,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
+const logout = async () => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.logOut,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
 export {
   signUpAPIc,
   signInAPIc,
@@ -232,5 +308,10 @@ export {
   fetchReceiverAPIcm,
   fetchFollowUpsByReceiverId,
   addNewFollowUpAPIcm,
+  updateReceiverAPIcm,
+  deleteReceiver,
   getFollowUpsByMonth,
+  getFollowUpsByFollowUpId,
+  deleteFollowUp,
+  logout,
 };

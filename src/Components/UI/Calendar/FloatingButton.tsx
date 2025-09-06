@@ -16,6 +16,7 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import { Colors } from '../../../Utils/Colors'; // your theme file
 import { navigate } from '../../../Navigations/NavigationServices';
 import { Screens } from '../../../Utils/Const';
+import { logOut } from '../../Function/handler';
 
 interface FloatingButtonProps {
   bgColor: string;
@@ -72,7 +73,7 @@ const FloatingButton = forwardRef<
       <Animated.View style={[styles.option, profileStyle]}>
         <TouchableOpacity
           style={[styles.smallButton, { backgroundColor: secondaryColor }]}
-          onPress={() => navigate(Screens.NotificationScreen)}
+          onPress={logOut}
         >
           <Ionicons name="log-out" size={22} color={iconColor} />
         </TouchableOpacity>

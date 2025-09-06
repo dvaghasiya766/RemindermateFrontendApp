@@ -3,6 +3,7 @@ import React, {
   forwardRef,
   useImperativeHandle,
   useRef,
+  useEffect,
 } from 'react';
 import { StyleSheet, TextInput, View, TextInputProps } from 'react-native';
 import Animated, {
@@ -21,12 +22,16 @@ const AnimatedTextInput = Animated.createAnimatedComponent(TextInput);
 interface AppTextInputProps extends TextInputProps {
   label?: string;
   isPsw?: boolean;
+  isFilled?: boolean;
   setEnteredText(text: string): void;
 }
 
 // 👇 forwardRef so parent can access .focus()
 const AppTextInput = forwardRef<any | TextInput, AppTextInputProps>(
-  ({ label, isPsw = false, setEnteredText, ...props }, ref) => {
+  (
+    { label, isPsw = false, isFilled = false, setEnteredText, ...props },
+    ref,
+  ) => {
     const inputRef = useRef<TextInput>(null);
 
     // expose imperative methods to parent
@@ -77,6 +82,18 @@ const AppTextInput = forwardRef<any | TextInput, AppTextInputProps>(
         });
       }
     };
+
+    useEffect(() => {
+      if (isFilled) {
+        setLabelState({
+          isFocused: true,
+          topValue: -4,
+          color: Colors.gray200,
+          border: Colors.gray100,
+          icon: Colors.gray400,
+        });
+      }
+    }, []);
 
     const colorConfig = { duration: 400, easing: Easing.inOut(Easing.ease) };
     const positionConfig = {

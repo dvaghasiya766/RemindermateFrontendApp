@@ -5,15 +5,26 @@ import { Fonts } from '../../../Utils/Fonts';
 
 type CalendarProps = {
   selectedDate: string;
+  followUps: any;
   onDayPress: (date: DateData) => void;
   onMonthChange: (month: DateData) => void;
 };
 
 const Calender = ({
   selectedDate,
+  followUps,
   onDayPress,
   onMonthChange,
 }: CalendarProps) => {
+  const markedDates: { [key: string]: { marked: boolean } } = {};
+
+  for (const followUp of followUps) {
+    const date = new Date(followUp.date);
+    const dateString = date.toISOString().split('T')[0];
+
+    markedDates[dateString] = { marked: true };
+  }
+
   return (
     <Calendar
       onDayPress={onDayPress}
@@ -53,8 +64,7 @@ const Calender = ({
         // margin: 10,
       }}
       markedDates={{
-        '2025-09-17': { marked: true },
-        '2025-09-28': { marked: true },
+        ...markedDates,
         ...(selectedDate
           ? {
               [selectedDate]: {

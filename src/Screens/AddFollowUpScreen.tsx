@@ -9,6 +9,8 @@ import Ionicons from '@react-native-vector-icons/ionicons';
 import { widthPx } from '../Utils/Responsive';
 import SelectReceiver from '../Components/UI/Inputs/SelectReceiver';
 import { addNewFollowUpAPIcm } from '../Components/Function/APIs';
+import { replace } from '../Navigations/NavigationServices';
+import { Screens } from '../Utils/Const';
 
 const formatTime = (date: Date) => {
   const hours = String(date.getHours()).padStart(2, '0');
@@ -16,6 +18,14 @@ const formatTime = (date: Date) => {
   const seconds = '00'; // if you don't collect seconds, set default
 
   return `${hours}:${minutes}:${seconds}`;
+};
+
+export const formatDate = (date: Date) => {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
 };
 
 const AddFollowUpScreen = () => {
@@ -44,20 +54,14 @@ const AddFollowUpScreen = () => {
 
     const newFollowUp = {
       title: enteredTitle.trim(),
-      details: enteredDetails.trim(),
+      description: enteredDetails.trim(),
       time: formatTime(time), // ✅ "HH:MM:SS"
-      date: date.toDateString(), // or formatted date string
+      date: formatDate(date), // or formatted date string
       receiver_id: selectedReciver.receiver_id,
     };
 
-    console.log('✅ New Follow-Up:', newFollowUp);
-
-    // TODO: send `newFollowUp` to your API or save in state
-    // await createFollowUpAPI(newFollowUp);
-
     const response: any = await addNewFollowUpAPIcm(newFollowUp);
     const data = response.data;
-    console.log('✅ Response:', response);
 
     if (!data.success) {
       let errorText = Object.entries(data.errors as Record<string, string[]>)
@@ -81,9 +85,18 @@ const AddFollowUpScreen = () => {
       name: '',
       email: '',
     });
+
+    replace(Screens.ViewFollowUpScreen, { id: data.data.task_id });
   };
   return (
     <View style={styles.rootContainer}>
+      <CustomColoredButton
+        title={selectedReciver.name}
+        bgColor={selectedReciver.color}
+        children={<Ionicons name="person" size={20} color="#fff" />}
+        style={{ width: '100%', marginBottom: 10 }}
+        onPress={() => setShowReciver(true)}
+      />
       <View
         style={{
           paddingHorizontal: 30,
@@ -108,13 +121,6 @@ const AddFollowUpScreen = () => {
           onPress={() => setShowTime(true)}
         />
       </View>
-      <CustomColoredButton
-        title={selectedReciver.name}
-        bgColor={selectedReciver.color}
-        children={<Ionicons name="person" size={20} color="#fff" />}
-        style={{ width: '100%', marginBottom: 20 }}
-        onPress={() => setShowReciver(true)}
-      />
       <AppTextInput
         ref={titleRef}
         setEnteredText={setEnteredTitle}
@@ -145,7 +151,7 @@ const AddFollowUpScreen = () => {
         onConfirm={selectedTime => {
           setShowDate(false);
           setDate(selectedTime);
-          console.log('Selected date:', selectedTime.toLocaleDateString());
+          // console.log('Selected date:', selectedTime.toLocaleDateString());
         }}
         onCancel={() => setShowDate(false)}
       />

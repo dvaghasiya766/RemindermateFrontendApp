@@ -1,5 +1,3 @@
-import FollowUp from '../Models/FollowUp';
-
 export const EndPoints = {
   register: 'register',
   login: 'login',
@@ -9,9 +7,14 @@ export const EndPoints = {
   verifyRegisterOtp: 'verify-register-otp',
   resendotp: 'resend-otp',
   addreceiver: 'addreceivers',
-  followupByMonth: 'followups/monthly-followups?',
   fetchReceivers: 'receivers/getMyReceivers',
   fetchReceiver: 'receiver/',
+  updateReceiver: 'receiver/update/',
   fetchFollowUpsByReceiverId: 'followups/receiver/',
+  removeReceiver: 'receiver/destroy/',
+  followupByMonth: 'followups/monthly-followups?',
   addNewFollowUp: 'addfollowups',
+  followUpByFollowUpId: 'followup/',
+  deleteFollowUp: 'followup/destroy/',
+  logOut: 'user/logout',
 };

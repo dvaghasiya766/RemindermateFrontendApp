@@ -2,16 +2,14 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import { Colors } from '../../../Utils/Colors';
 import { Fonts } from '../../../Utils/Fonts';
-import { GestureResponderEvent } from 'react-native-modal';
 import { widthPx } from '../../../Utils/Responsive';
-import Ionicons from '@react-native-vector-icons/ionicons';
 
 interface CustomColoredButtonProps {
   title: string;
   bgColor: string;
   children: React.ReactNode;
   style?: any;
-  onPress?: (event: GestureResponderEvent) => void;
+  onPress: () => void;
 }
 
 const CustomColoredButton = ({

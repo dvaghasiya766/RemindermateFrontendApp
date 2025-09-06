@@ -8,6 +8,7 @@ import { navigate } from '../../../Navigations/NavigationServices';
 import { Screens } from '../../../Utils/Const';
 
 interface MyAgendaProps {
+  id: number;
   title: string;
   desc: string;
   time?: string;
@@ -16,6 +17,7 @@ interface MyAgendaProps {
 }
 
 const MyAgenda = ({
+  id,
   title,
   desc,
   time,
@@ -34,7 +36,7 @@ const MyAgenda = ({
     <Pressable
       style={styles.shadowWrapper}
       onPress={() => {
-        navigate(Screens.ViewFollowUpScreen);
+        navigate(Screens.ViewFollowUpScreen, { id: id });
       }}
     >
       <View style={styles.rootContainer}>

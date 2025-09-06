@@ -11,6 +11,7 @@ import ReactNativeModal from 'react-native-modal';
 import { fetchReceiversAPIcm } from '../../Function/APIs';
 import { Colors } from '../../../Utils/Colors';
 import MyRecivers from '../Calendar/MyRecivers';
+import Title from '../Text/Title';
 
 interface SelectReceiverProps {
   showModal: boolean;
@@ -32,7 +33,7 @@ const SelectReceiver = ({
   const fetchReceivers = async () => {
     const response: any = await fetchReceiversAPIcm();
     const data = response.data;
-    console.log(response);
+    // console.log(response);
 
     if (!data.success) {
       let errorText = data.message;
@@ -57,7 +58,7 @@ const SelectReceiver = ({
       onBackdropPress={() => setShowModal(false)}
       useNativeDriverForBackdrop={true}
     >
-      <Text style={{ fontSize: 18, fontWeight: '600' }}>Select Reciver</Text>
+      <Title>Select Receiver</Title>
       <FlatList
         renderItem={itemData => (
           <MyRecivers
@@ -89,7 +90,7 @@ export default SelectReceiver;
 
 const styles = StyleSheet.create({
   modalContainer: {
-    width: '85%',
+    // width: '85%',
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 20,
