@@ -22,6 +22,7 @@ const ReciverScreen = () => {
   const fetchReceivers = async () => {
     const response: any = await fetchReceiversAPIcm();
     const data = response.data;
+    // console.log(response);
 
     if (!data.success) {
       let errorText = data.message;
@@ -30,7 +31,6 @@ const ReciverScreen = () => {
     }
 
     setReceivers(data.data);
-    console.log(response);
   };
 
   return (

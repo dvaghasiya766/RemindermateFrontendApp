@@ -12,17 +12,22 @@ import { RootStackParamList } from '../Navigations/Navigation';
 import Avatar from '../Components/UI/Avatar';
 import { widthPx } from '../Utils/Responsive';
 import Title from '../Components/UI/Text/Title';
-import { fetchReceiverAPIcm } from '../Components/Function/APIs';
+import {
+  fetchFollowUpsByReceiverId,
+  fetchReceiverAPIcm,
+} from '../Components/Function/APIs';
 import CardDesc from '../Components/UI/Text/CardDesc';
 import { replace } from '../Navigations/NavigationServices';
 import { Screens } from '../Utils/Const';
 import MyAgenda from '../Components/UI/Calendar/MyAgenda';
 import { Colors } from '../Utils/Colors';
+import CustomColoredButton from '../Components/UI/Buttons/CustomColoredButton';
+import Ionicons from '@react-native-vector-icons/ionicons';
 
 type Props = NativeStackScreenProps<RootStackParamList>;
 
 const ViewReciverScreen = ({ route }: Props) => {
-  const { id }: { id?: number } = route.params ?? {};
+  const { id }: { id?: number } = route.params ?? { id: 0 };
   const [receiverData, setReceiverData] = useState<any>();
   const [followUps, setFollowUps] = useState([]);
 
@@ -46,10 +51,26 @@ const ViewReciverScreen = ({ route }: Props) => {
     }
 
     setReceiverData(data.data);
-    console.log(response);
+    // console.log(response);
   };
 
-  const fetchFollowUps = async () => {};
+  const fetchFollowUps = async () => {
+    if (!id) {
+      replace(Screens.ReciverScreen);
+      return;
+    }
+    const response: any = await fetchFollowUpsByReceiverId(id);
+    const data = response.data;
+
+    if (!data.success) {
+      let errorText = data.message;
+      Alert.alert(`Error`, errorText, [{ text: 'OK' }]);
+      return;
+    }
+
+    setFollowUps(data.data.followUps);
+    // console.log(response);
+  };
 
   return (
     <View style={styles.rootContainer}>
@@ -62,6 +83,28 @@ const ViewReciverScreen = ({ route }: Props) => {
           />
           <Title>{receiverData.name}</Title>
           <CardDesc>{receiverData.email}</CardDesc>
+          <View
+            style={{
+              paddingHorizontal: 30,
+              width: widthPx(100),
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              marginTop: 10,
+            }}
+          >
+            <CustomColoredButton
+              title="Delete"
+              bgColor={Colors.danger}
+              children={<Ionicons name="trash-bin" size={20} color="#fff" />}
+              onPress={() => {}}
+            />
+            <CustomColoredButton
+              title="Edit"
+              bgColor={receiverData.color}
+              children={<Ionicons name="create" size={20} color="#fff" />}
+              onPress={() => {}}
+            />
+          </View>
         </View>
       )}
       <FlatList
@@ -77,6 +120,7 @@ const ViewReciverScreen = ({ route }: Props) => {
         )}
         data={followUps}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={<Text>NotFound!</Text>}
       />
     </View>
   );

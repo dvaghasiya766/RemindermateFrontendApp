@@ -21,9 +21,6 @@ const Avatar = ({
       <Text style={{ ...CommonStylesFn.text(10, Colors.white, Fonts.medium) }}>
         {name[0].toLocaleUpperCase()}
       </Text>
-      <IconButton onPress={() => {}} style={styles.buttonStyle}>
-        <Ionicons name="pencil" size={17} color={Colors.white} />
-      </IconButton>
     </View>
   );
 };
@@ -38,14 +35,5 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 10,
-  },
-  buttonStyle: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    height: 30,
-    width: 30,
-    padding: 7,
-    backgroundColor: Colors.black,
   },
 });

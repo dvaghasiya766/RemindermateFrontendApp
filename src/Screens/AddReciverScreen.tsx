@@ -50,8 +50,9 @@ const AddReciverScreen = () => {
       Alert.alert(`Error`, errorText, [{ text: 'OK' }]);
       return;
     }
-    console.log('success');
-    goBack();
+    // console.log(typeof data.data.receiver_id);
+    // goBack();
+    replace(Screens.ViewReciverScreen, { id: data.data.receiver_id });
   };
 
   return (
