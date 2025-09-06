@@ -13,4 +13,5 @@ export const EndPoints = {
   fetchReceivers: 'receivers/getMyReceivers',
   fetchReceiver: 'receiver/',
   fetchFollowUpsByReceiverId: 'followups/receiver/',
+  addNewFollowUp: 'addfollowups',
 };

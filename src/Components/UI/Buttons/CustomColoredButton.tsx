@@ -10,6 +10,7 @@ interface CustomColoredButtonProps {
   title: string;
   bgColor: string;
   children: React.ReactNode;
+  style?: any;
   onPress?: (event: GestureResponderEvent) => void;
 }
 
@@ -17,6 +18,7 @@ const CustomColoredButton = ({
   title,
   bgColor,
   children,
+  style,
   onPress,
 }: CustomColoredButtonProps) => {
   return (
@@ -24,6 +26,7 @@ const CustomColoredButton = ({
       style={[
         styles.outterContainer,
         { backgroundColor: bgColor, width: widthPx(40) },
+        { ...style },
       ]}
     >
       <Pressable

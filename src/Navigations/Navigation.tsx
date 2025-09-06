@@ -40,7 +40,7 @@ export type RootStackParamList = {
   NotificationScreen: undefined;
   AddFollowUpScreen: undefined;
   AddReciverScreen: undefined;
-  ViewFollowUpScreen: undefined;
+  ViewFollowUpScreen: { id: number };
   ViewReciverScreen: { id: number };
 };
 

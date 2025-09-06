@@ -19,7 +19,7 @@ const getMonthlyFollowUps = async (
 ) => {
   const response: any = await getFollowUpsByMonth({ ...monthData });
   const data = response?.data;
-  console.log(data);
+  // console.log(data);
 };
 
 const CalendarViewScreen = () => {

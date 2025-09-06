@@ -13,14 +13,20 @@ interface MyReciversProps {
   name: string;
   email: string;
   color: string;
+  onPress?: () => void;
 }
 
-const MyRecivers = ({ id, name, email, color }: MyReciversProps) => {
+const MyRecivers = ({ id, name, email, color, onPress }: MyReciversProps) => {
+  const handlePress = () => {
+    if (onPress) {
+      onPress();
+      return;
+    }
+    navigate(Screens.ViewReciverScreen, { id: id });
+  };
+
   return (
-    <Pressable
-      style={styles.rootContainer}
-      onPress={() => navigate(Screens.ViewReciverScreen, { id: id })}
-    >
+    <Pressable style={styles.rootContainer} onPress={handlePress}>
       <View style={[styles.avatarContainer, , { backgroundColor: color }]}>
         <Text style={{ ...CommonStylesFn.text(4, Colors.white, Fonts.medium) }}>
           {name[0].toLocaleUpperCase()}

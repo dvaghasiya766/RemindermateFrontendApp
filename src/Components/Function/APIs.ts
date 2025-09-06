@@ -182,6 +182,22 @@ const fetchFollowUpsByReceiverId = async (id: string) => {
   }
 };
 
+const addNewFollowUpAPIcm = async (followUpData: object) => {
+  try {
+    Loader.isLoading(true);
+    const response = await APICall({
+      method: 'post',
+      url: EndPoints.addNewFollowUp,
+      payload: followUpData,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  } finally {
+    Loader.isLoading(false);
+  }
+};
+
 const getFollowUpsByMonth = async ({
   month,
   year,
@@ -215,5 +231,6 @@ export {
   fetchReceiversAPIcm,
   fetchReceiverAPIcm,
   fetchFollowUpsByReceiverId,
+  addNewFollowUpAPIcm,
   getFollowUpsByMonth,
 };
